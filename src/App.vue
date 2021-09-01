@@ -1,32 +1,46 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <Modals />
+    <component :is="currentLayout">
+      <router-view />
+    </component>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import { mapMutations } from "vuex";
+
+export default {
+  computed: {
+    currentLayout: () => {
+      return () => import("@/Layouts/MainLayout.vue");
+    },
+  },
+  components: {
+    Modals: () => import("@/components/Modals/Index"),
+  },
+  methods: {
+    ...mapMutations(["setUser"]),
+  },
+  async mounted() {
+    let user = await this.$axios
+      .get("user/profile/612e734dc194f45caf180d04")
+      .then((res) => res.data);
+    this.setUser(user);
+  },
+};
+</script>
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+* {
+  font-family: Roboto, sans-serif;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
 }
 </style>

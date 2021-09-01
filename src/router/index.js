@@ -1,23 +1,58 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    redirect: "/home",
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/home",
+    name: "home",
+    redirect: "/home/posts",
+    component: () => import("@/views/Home"),
+    children: [
+      {
+        path: "posts",
+        name: "posts",
+        component: () => import("@/components/Posts/Index.vue"),
+      },
+      {
+        path: "comments",
+        name: "news/comments",
+        component: () => import("@/components/Comments/Index.vue"),
+      },
+      {
+        path: "profile/:id",
+        name: "profile",
+        redirect: "profile/:id/entries",
+        component: () => import("@/components/Profile/Index.vue"),
+        children: [
+          {
+            path: "entries",
+            name: "entries",
+            component: () => import("@/components/Profile/Entries.vue"),
+          },
+          {
+            path: "comments",
+            name: "comments",
+            component: () => import("@/components/Profile/Comments.vue"),
+          },
+          {
+            path: "details",
+            name: "details",
+            component: () => import("@/components/Profile/Details.vue"),
+          },
+        ],
+      },
+      {
+        path: "post/:id",
+        name: "post",
+        component: () => import("@/components/PostPage/Index.vue"),
+      },
+    ],
   },
 ];
 

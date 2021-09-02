@@ -1,6 +1,6 @@
 # tjournal
 
-### Project setup
+# Project setup
 ```
 npm install
 ```

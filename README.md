@@ -1,13 +1,13 @@
-# tjournal
+# Tjournal
 
-# Project setup
+### Project setup
 ```
-npm install
+npm install && cd server/myapp && npm instal
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run serve && cd server/myapp && npm run server
 ```
 
 ### Compiles and minifies for production

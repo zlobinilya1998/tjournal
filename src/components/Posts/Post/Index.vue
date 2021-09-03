@@ -89,7 +89,9 @@
           </button>
         </div>
       </div>
-      <h3 @click="postPage" class="font-bold text-lg mt-3 cursor-pointer">{{ post.title }}</h3>
+      <h3 @click="postPage" class="font-bold text-lg mt-3 cursor-pointer">
+        {{ post.title }}
+      </h3>
       <p class="mt-5">{{ post.subtitle }}</p>
     </div>
     <img :src="pathToImg" />
@@ -203,7 +205,7 @@ export default {
     loading: false,
   }),
   computed: {
-    ...mapGetters(["user","webRoutes"]),
+    ...mapGetters(["user", "webRoutes"]),
     pathToImg() {
       return this.webRoutes.postImg + this.post.img;
     },
@@ -212,13 +214,14 @@ export default {
       return this.post.user._id === this.user._id;
     },
     subscribedOnPostCreator() {
+      if (!this.user) return;
       return this.user.subscriptions.some(
         (user) => user._id === this.post.user._id
       );
     },
   },
   methods: {
-    ...mapMutations(["setUser"]),
+    ...mapMutations(["setUser", "toggleRegistrationModal"]),
     like() {
       this.$axios.put("posts/like", { _id: this.post._id }).then((res) => {
         this.$emit("updated", res.data);
@@ -240,13 +243,17 @@ export default {
         params: { id: this.post.user._id },
       });
     },
-    postPage(){
+    postPage() {
       this.$router.push({
         name: "post",
         params: { id: this.post._id },
       });
     },
     subscribeOnUser() {
+      if (!this.user) {
+        this.toggleRegistrationModal({ show: true });
+        return;
+      }
       this.loading = true;
       setTimeout(() => {
         this.$axios

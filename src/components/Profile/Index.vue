@@ -170,17 +170,23 @@ export default {
         .replaceAll(".", " ");
     },
     isMyProfile() {
+      if (!this.user) return ;
       return this.profileUser._id === this.user._id;
     },
     subscribedOnProfileCreator() {
+      if (!this.user) return ;
       return this.user.subscriptions.some(
         (user) => user._id === this.profileUser._id
       );
     },
   },
   methods: {
-    ...mapMutations(["setUser"]),
+    ...mapMutations(["setUser","toggleRegistrationModal"]),
     subscribeOnUser() {
+      if (!this.user){
+        this.toggleRegistrationModal({show:true});
+        return
+      }
       this.loading = true;
       setTimeout(() => {
         this.$axios

@@ -9,17 +9,39 @@ router.get("/profile/:id", async (req, res) => {
   );
   res.send(user);
 });
+router.post("/login", async (req, res) => {
+  let { email, password } = req.body;
+  try {
+    let user = await User.findOne({ email, password });
+    console.log(user);
+    if (!user) {
+      return res.status(404).send({ message: "Пользователь не найден" });
+    }
+    res.send(user);
+  } catch (e) {
+    res.send(e);
+  }
+});
 router.post("/create", async (req, res) => {
-  let user = new User({
-    avatar: "woman.webp",
-    name: "Соня",
-    secondName: "Ждановская",
-    password: "123",
-    favorites: [],
-    subscriptions: [],
-  });
-  await user.save();
-  res.send("created");
+  let { name, secondName, password, email } = req.body;
+  try {
+    let userExists = await User.findOne({ email });
+    if (userExists)
+      return res.status(409).send({ message: "Пользователь уже существует" });
+    let user = new User({
+      avatar: "default.png",
+      name,
+      secondName,
+      password,
+      email,
+      favorites: [],
+      subscriptions: [],
+    });
+    await user.save();
+    res.send(user);
+  } catch (e) {
+    res.send(e);
+  }
 });
 router.put("/subscribe", async (req, res) => {
   let subscriber = await User.findOne({

@@ -3,10 +3,11 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./index.css";
-import { AOS, VueAxios, axios, OhVueIcon } from "./plugins/index";
+import { AOS, VueAxios, axios, OhVueIcon, Vuelidate } from "./plugins/index";
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
+Vue.use(Vuelidate);
 const axiosConfig = {
   baseURL: "http://localhost:3000/api/",
   timeout: 30000,

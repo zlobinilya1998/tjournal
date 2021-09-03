@@ -127,9 +127,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user","webRoutes"]),
     userAvatar() {
-      return `http://localhost:3000/static/images/avatar/${this.user.avatar}`;
+      return this.webRoutes.userAvatar + this.user.avatar;
     },
   },
 };

@@ -44,13 +44,16 @@
 </template>
 
 <script>
+
+  import { mapGetters } from "vuex"
 export default {
   data: () => ({
     comments: [],
   }),
   computed: {
+    ...mapGetters(["webRoutes"]),
     userAvatar() {
-      return `http://localhost:3000/static/images/avatar/${this.$attrs.profileUser.avatar}`;
+      return this.webRoutes.userAvatar + this.$attrs.profileUser.avatar;
     },
     userName() {
       return (

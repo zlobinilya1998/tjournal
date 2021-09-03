@@ -101,7 +101,7 @@ export default {
     async subscribeOnNewPosts() {
       try {
         let { data } = await this.$axios.get(
-          "http://localhost:3000/api/posts/subscribe"
+          "posts/subscribe"
         );
         this.posts = data;
         await this.subscribeOnNewPosts();

@@ -25,64 +25,64 @@
         <div v-else class="flex space-x-4">
           <div>
             <button
-                    :disabled="loading"
-                    v-if="subscribedOnProfileCreator"
-                    @click="unsubscribeOnUser"
-                    class="
-              flex
-              bg-red-400
-              hover:bg-red-500
-              transition
-              text-white
-              rounded-lg
-              p-2
-              items-center
-            "
+              :disabled="loading"
+              v-if="subscribedOnProfileCreator"
+              @click="unsubscribeOnUser"
+              class="
+                flex
+                bg-red-400
+                hover:bg-red-500
+                transition
+                text-white
+                rounded-lg
+                p-2
+                items-center
+              "
             >
               <v-icon v-if="loading" animation="spin" name="fa-spinner" />
               <svg
-                      v-else
-                      class="fill-current"
-                      width="12"
-                      height="12"
-                      viewBox="0 0 10 10"
-                      id="ui_close"
+                v-else
+                class="fill-current"
+                width="12"
+                height="12"
+                viewBox="0 0 10 10"
+                id="ui_close"
               >
                 <path
-                        fill-rule="evenodd"
-                        d="M9.096 0L5 4.097.903 0 0 .904 4.096 5 0 9.097.903 10 5 5.904 9.096 10 10 9.097 5.903 5 10 .904z"
+                  fill-rule="evenodd"
+                  d="M9.096 0L5 4.097.903 0 0 .904 4.096 5 0 9.097.903 10 5 5.904 9.096 10 10 9.097 5.903 5 10 .904z"
                 ></path>
               </svg>
               <span class="w-full text-center px-5">Отписаться</span>
             </button>
             <button
-                    :disabled="loading"
-                    v-else
-                    @click="subscribeOnUser"
-                    class="
-              flex
-              bg-blue-400
-              hover:bg-blue-500
-              transition
-              text-white
-              rounded-lg
-              p-2
-              items-center
-            "
+              :disabled="loading"
+              v-else
+              @click="subscribeOnUser"
+              class="
+                flex
+                bg-blue-400
+                hover:bg-blue-500
+                transition
+                text-white
+                rounded-lg
+                p-2
+                items-center
+              "
             >
               <v-icon v-if="loading" animation="spin" name="fa-spinner" />
               <svg
-                      v-else
-                      class="fill-current"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 20 20"
-                      id="v_follow"
+                v-else
+                class="fill-current"
+                width="24"
+                height="24"
+                viewBox="0 0 20 20"
+                id="v_follow"
               >
                 <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M5.61 10.9c1.113-.611 2.578-.9 4.375-.9a.833.833 0 110 1.667c-1.644 0-2.797.268-3.573.693-.748.41-1.182.985-1.385 1.726-.06.22-.018.411.1.547.12.14.45.367 1.257.367h2.767l.001.833v.833H6.384c-1.101 0-1.972-.315-2.515-.94-.546-.628-.63-1.42-.45-2.08.324-1.179 1.05-2.12 2.191-2.747zm4.375 4.933c0 .46-.373.833-.833.833V15c.46 0 .833.373.833.834zm-3.318-10a3.333 3.333 0 116.666 0 3.333 3.333 0 01-6.667 0zM10 4.167A1.667 1.667 0 1010 7.5a1.667 1.667 0 000-3.333zm5 6.666c.46 0 .833.373.833.834v1.666H17.5a.833.833 0 110 1.667h-1.667v1.667a.833.833 0 01-1.667 0V15H12.5a.833.833 0 010-1.667h1.666v-1.666c0-.46.374-.834.834-.834z"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M5.61 10.9c1.113-.611 2.578-.9 4.375-.9a.833.833 0 110 1.667c-1.644 0-2.797.268-3.573.693-.748.41-1.182.985-1.385 1.726-.06.22-.018.411.1.547.12.14.45.367 1.257.367h2.767l.001.833v.833H6.384c-1.101 0-1.972-.315-2.515-.94-.546-.628-.63-1.42-.45-2.08.324-1.179 1.05-2.12 2.191-2.747zm4.375 4.933c0 .46-.373.833-.833.833V15c.46 0 .833.373.833.834zm-3.318-10a3.333 3.333 0 116.666 0 3.333 3.333 0 01-6.667 0zM10 4.167A1.667 1.667 0 1010 7.5a1.667 1.667 0 000-3.333zm5 6.666c.46 0 .833.373.833.834v1.666H17.5a.833.833 0 110 1.667h-1.667v1.667a.833.833 0 01-1.667 0V15H12.5a.833.833 0 010-1.667h1.666v-1.666c0-.46.374-.834.834-.834z"
                 ></path>
               </svg>
               <span class="w-full text-center px-5">Подписаться</span>
@@ -148,17 +148,17 @@
 </template>
 
 <script>
-import { mapGetters,mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   data: () => ({
     profileUser: null,
-    loading:false,
+    loading: false,
   }),
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "webRoutes"]),
     userAvatar() {
-      return `http://localhost:3000/static/images/avatar/${this.profileUser.avatar}`;
+      return this.webRoutes.userAvatar + this.profileUser.avatar;
     },
     userCreated() {
       return new Date(this.profileUser.createdAt)
@@ -179,39 +179,39 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['setUser']),
+    ...mapMutations(["setUser"]),
     subscribeOnUser() {
       this.loading = true;
       setTimeout(() => {
         this.$axios
-                .put("user/subscribe", {
-                  subscriber: this.user._id,
-                  publisher: this.profileUser._id,
-                })
-                .then((res) => {
-                  this.setUser(res.data);
-                })
-                .catch((e) => console.log(e))
-                .finally(() => {
-                  this.loading = false;
-                });
+          .put("user/subscribe", {
+            subscriber: this.user._id,
+            publisher: this.profileUser._id,
+          })
+          .then((res) => {
+            this.setUser(res.data);
+          })
+          .catch((e) => console.log(e))
+          .finally(() => {
+            this.loading = false;
+          });
       }, 600);
     },
     unsubscribeOnUser() {
       this.loading = true;
       setTimeout(() => {
         this.$axios
-                .put("user/unsubscribe", {
-                  subscriber: this.user._id,
-                  publisher: this.profileUser._id,
-                })
-                .then((res) => {
-                  this.setUser(res.data);
-                })
-                .catch((e) => console.log(e))
-                .finally(() => {
-                  this.loading = false;
-                });
+          .put("user/unsubscribe", {
+            subscriber: this.user._id,
+            publisher: this.profileUser._id,
+          })
+          .then((res) => {
+            this.setUser(res.data);
+          })
+          .catch((e) => console.log(e))
+          .finally(() => {
+            this.loading = false;
+          });
       }, 600);
     },
   },

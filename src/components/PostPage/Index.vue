@@ -200,12 +200,12 @@ export default {
     loading: false,
   }),
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user","webRoutes"]),
     pathToImg() {
-      return "http://localhost:3000/static/images/news/" + this.post.img;
+      return this.webRoutes.postImg + this.post.img;
     },
     userAvatar() {
-      return `http://localhost:3000/static/images/avatar/${this.post.user.avatar}`;
+      return this.webRoutes.userAvatar + this.post.user.avatar;
     },
     userName() {
       return this.post.user.name + " " + this.post.user.secondName;

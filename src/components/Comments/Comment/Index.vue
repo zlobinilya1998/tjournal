@@ -1,6 +1,9 @@
 <template>
   <div class="my-5">
-    <div @click="postHolderProfile" class="flex items-center cursor-pointer hover:text-blue-400 transition">
+    <div
+      @click="postHolderProfile"
+      class="flex items-center cursor-pointer hover:text-blue-400 transition"
+    >
       <div
         class="mr-2 bg-cover rounded-lg w-6 h-6"
         :style="{
@@ -15,17 +18,19 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: ["comment"],
   computed: {
+    ...mapGetters(["webRoutes"]),
     userAvatar() {
-      return `http://localhost:3000/static/images/avatar/${this.comment.user.avatar}`;
+      return this.webRoutes.userAvatar + this.comment.user.avatar;
     },
     userName() {
       return this.comment.user.name + " " + this.comment.user.secondName;
     },
   },
-  methods:{
+  methods: {
     postHolderProfile() {
       this.$router.push({
         name: "profile",

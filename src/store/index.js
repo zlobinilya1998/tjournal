@@ -19,6 +19,10 @@ export default new Vuex.Store({
         show: false,
       },
     },
+    webRoutes: {
+      userAvatar: "http://localhost:3000/static/images/avatar/",
+      postImg: "http://localhost:3000/static/images/news/",
+    },
   },
   mutations: {
     setUser: (state, payload) => (state.user = payload),
@@ -33,6 +37,7 @@ export default new Vuex.Store({
     user: (state) => state.user,
     leftSideBar: (state) => state.menu.leftSidebar,
     modals: (state) => state.modals,
+    webRoutes: (state) => state.webRoutes,
   },
   actions: {},
   modules: {},

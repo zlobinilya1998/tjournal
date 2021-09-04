@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-yellow-100 h-14 px-6 flex justify-between">
+  <div class="fixed top-0  w-full z-10 bg-yellow-100 h-14 px-6 flex justify-between">
     <div class="flex items-center">
       <svg
         @click="toggleLeftSidebar"
@@ -32,11 +32,14 @@
           ></path>
         </svg>
       </router-link>
-      <div class="mr-2 flex items-center bg-gray-100 p-2 rounded-lg">
+      <div
+        class="mr-2 flex items-center bg-white p-2 rounded-lg transition relative"
+        :class="{ 'bg-yellow-50': !search, 'ring-2 ring-yellow-500': search }"
+      >
         <svg
           class="mr-2"
-          height="24"
-          width="24"
+          height="20"
+          width="20"
           viewBox="0 0 24 24"
           id="v_search"
         >
@@ -44,7 +47,18 @@
             d="M11 5a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.905l3.387 3.388a1 1 0 01-1.414 1.414l-3.387-3.387A8 8 0 013 11z"
           ></path>
         </svg>
-        <input class="outline-none" type="text" placeholder="Поиск" />
+        <input
+          class="outline-none bg-transparent w-56"
+          type="text"
+          placeholder="Поиск"
+          v-model="search"
+        />
+        <div v-if="search" class="absolute left-0 -bottom-12 w-full p-2 bg-white rounded-lg shadow">
+          <button class="flex">
+            <svg class="mr-2" width="20" height="20" viewBox="0 0 24 24" id="v_enter"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 4a1 1 0 011 1v6a4 4 0 01-4 4H6.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 13H17a2 2 0 002-2V5a1 1 0 011-1z"></path></svg>
+            <span class="text-sm">Перейти к результатам</span>
+          </button>
+        </div>
       </div>
       <button class="btn-white font-medium" @click="createNewPost">
         Новая запись
@@ -94,7 +108,10 @@
           d="M15.49 13.802l.055.047v.066c0 .745-.581 1.078-1.3 1.078H9.468c0 .943-.786 2.007-1.695 2.007-.91 0-1.739-1.064-1.739-2.007H1.336C.618 14.993 0 14.66 0 13.915v-.066l.055-.047C2.009 12.179 3 9.585 3 6.085c0-1.783 1.318-3.887 3.782-4.359a.667.667 0 01-.055-.264c0-.528.491-.99 1.046-.99.554 0 1.045.462 1.045.99a.667.667 0 01-.054.264c2.463.472 3.781 2.576 3.781 4.359 0 3.5.991 6.094 2.946 7.717zM7.774 3.113c-2.41 0-3.41 1.88-3.41 2.888 0 3.236-.718 5.683-2.2 7.47h11.219c-1.482-1.787-2.2-4.234-2.2-7.47 0-1.009-1-2.888-3.41-2.888"
         ></path>
       </svg>
-      <button class="flex items-center hover:text-yellow-600 transition" @click="login">
+      <button
+        class="flex items-center hover:text-yellow-600 transition"
+        @click="login"
+      >
         <svg
           class="mr-3 fill-current"
           width="24"
@@ -116,18 +133,25 @@
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
+  data: () => ({
+    search: "",
+  }),
   methods: {
-    ...mapMutations(["toggleLeftSidebar", "toggleCreatePostModal","toggleRegistrationModal"]),
+    ...mapMutations([
+      "toggleLeftSidebar",
+      "toggleCreatePostModal",
+      "toggleRegistrationModal",
+    ]),
     createNewPost() {
-      if (!this.user) return this.toggleRegistrationModal({show:true});
+      if (!this.user) return this.toggleRegistrationModal({ show: true });
       this.toggleCreatePostModal({ show: true });
     },
-    login(){
+    login() {
       this.toggleRegistrationModal({ show: true });
     },
   },
   computed: {
-    ...mapGetters(["user","webRoutes"]),
+    ...mapGetters(["user", "webRoutes"]),
     userAvatar() {
       return this.webRoutes.userAvatar + this.user.avatar;
     },

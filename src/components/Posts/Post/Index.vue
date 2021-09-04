@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 bg-white rounded-lg">
+  <div class="bg-white rounded-lg">
     <div class="p-5">
       <div class="flex justify-between items-center">
         <div>

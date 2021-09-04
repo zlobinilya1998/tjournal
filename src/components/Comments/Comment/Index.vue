@@ -13,7 +13,7 @@
       <span>{{ userName }}</span>
     </div>
     <p class="my-1 text-sm truncate">{{ comment.text }}</p>
-    <p class="font-medium text-sm">{{ comment.post.title }}</p>
+    <p class="font-medium text-sm cursor-pointer hover:text-blue-400 transition" @click="postPage">{{ comment.post.title }}</p>
   </div>
 </template>
 
@@ -36,6 +36,9 @@ export default {
         name: "profile",
         params: { id: this.comment.user._id },
       });
+    },
+    postPage(){
+      this.$router.push({name:'post',params:{id:this.comment.post._id}})
     },
   },
 };

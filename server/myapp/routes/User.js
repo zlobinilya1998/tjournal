@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const User = require("../models/User");
+const Post = require("../models/Post");
 
 router.get("/profile/:id", async (req, res) => {
   let user = await User.findOne({ _id: req.params.id }).populate(
@@ -8,6 +9,17 @@ router.get("/profile/:id", async (req, res) => {
     "_id"
   );
   res.send(user);
+});
+router.get("/posts/:id", async (req, res) => {
+  let posts = await Post.find({ user: req.params.id })
+    .populate("user")
+    .populate({ path: "comments", populate: "user" })
+    .populate({
+      path: "reposts",
+      populate: "user",
+    })
+    .sort({ createdAt: -1 });
+  res.send(posts);
 });
 router.post("/login", async (req, res) => {
   let { email, password } = req.body;

@@ -152,7 +152,9 @@ export default {
   watch: {
     newPostForm: {
       handler(value) {
-        this.newPostForm.icon = this.options.categories.find(category=>category.name === value.category).icon
+        if (value.category){
+          this.newPostForm.icon = this.options.categories.find(category=>category.name === value.category).icon
+        }
       },
       deep: true,
     },

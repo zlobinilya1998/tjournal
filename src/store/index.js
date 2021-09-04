@@ -7,6 +7,9 @@ export default new Vuex.Store({
   state: {
     user: null,
     modals: {
+      postSettings: {
+        show: false,
+      },
       registration: {
         show: false,
       },

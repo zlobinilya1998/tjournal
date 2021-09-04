@@ -255,13 +255,7 @@
           </p>
           <div class="mt-5 flex flex-col">
             <input
-              class="
-                mt-3
-                ring-1 ring-blue-100
-                focus:ring-blue-600
-                outline-none
-                p-2
-              "
+              class="mt-3 outline-none p-2 border-2 border-blue-200"
               :class="{
                 invalid:
                   $v.login.viaEmail.email.$dirty &&
@@ -272,16 +266,22 @@
               v-model="login.viaEmail.email"
             />
             <div class="h-4">
+              <transition-group name="fade" mode="in-out">
+                <div
+                  key="first"
+                  class="error"
+                  v-if="
+                    $v.login.viaEmail.email.$dirty &&
+                    !$v.login.viaEmail.email.required
+                  "
+                >
+                  Почта обязательное поле
+                </div>
+              </transition-group>
             </div>
 
             <input
-              class="
-                mt-3
-                ring-1 ring-blue-100
-                focus:ring-blue-600
-                outline-none
-                p-2
-              "
+              class="mt-3 outline-none p-2 border-2 border-blue-200"
               :class="{
                 invalid:
                   $v.login.viaEmail.password.$dirty &&
@@ -311,7 +311,7 @@
                     $v.login.viaEmail.password.$dirty
                   "
                 >
-                  Имя должно быть не менее
+                  Пароль должен быть не менее
                   {{ $v.login.viaEmail.password.$params.minLength.min }}
                   символов.
                 </div>
@@ -332,6 +332,7 @@
                   transition
                   rounded-lg
                 "
+                :class="{'bg-blue-500': !$v.login.viaEmail.$invalid}"
               >
                 <span class="mr-2"> Войти </span>
                 <v-icon

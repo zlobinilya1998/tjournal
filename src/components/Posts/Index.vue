@@ -67,6 +67,8 @@
 </template>
 
 <script>
+
+  import { mapMutations } from "vuex"
 export default {
   data: () => ({
     posts: null,
@@ -100,6 +102,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(['toggleConfigureNewsModal']),
     sortBy(value) {
       this.filter = value;
     },
@@ -122,7 +125,7 @@ export default {
       this.posts = updatedPosts;
     },
     configureNews() {
-
+      this.toggleConfigureNewsModal({show:true})
     },
   },
   mounted() {

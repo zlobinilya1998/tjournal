@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     modals: {
-      postSettings: {
+      configureNews: {
         show: false,
       },
       registration: {
@@ -29,6 +29,8 @@ export default new Vuex.Store({
   },
   mutations: {
     setUser: (state, payload) => (state.user = payload),
+    toggleConfigureNewsModal: (state, payload) =>
+      (state.modals.configureNews = payload),
     toggleRegistrationModal: (state, payload) =>
       (state.modals.registration = payload),
     toggleCreatePostModal: (state, payload) =>

@@ -68,7 +68,7 @@
 
 <script>
 
-  import { mapMutations } from "vuex"
+  import { mapMutations,mapGetters } from "vuex"
 export default {
   data: () => ({
     posts: null,
@@ -80,6 +80,7 @@ export default {
     Comments: () => import("@/components/Comments/Index"),
   },
   computed: {
+    ...mapGetters(['user']),
     today: () =>
       new Date()
         .toLocaleDateString("ru-Ru", {
@@ -102,7 +103,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['toggleConfigureNewsModal']),
+    ...mapMutations(['toggleConfigureNewsModal','toggleRegistrationModal']),
     sortBy(value) {
       this.filter = value;
     },
@@ -125,6 +126,9 @@ export default {
       this.posts = updatedPosts;
     },
     configureNews() {
+      if (!this.user){
+        return this.toggleRegistrationModal({show:true})
+      }
       this.toggleConfigureNewsModal({show:true})
     },
   },

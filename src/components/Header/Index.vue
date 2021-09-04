@@ -53,12 +53,14 @@
           placeholder="Поиск"
           v-model="search"
         />
-        <div v-if="search" class="absolute left-0 -bottom-12 w-full p-2 bg-white rounded-lg shadow">
-          <button class="flex">
-            <svg class="mr-2" width="20" height="20" viewBox="0 0 24 24" id="v_enter"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 4a1 1 0 011 1v6a4 4 0 01-4 4H6.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 13H17a2 2 0 002-2V5a1 1 0 011-1z"></path></svg>
-            <span class="text-sm">Перейти к результатам</span>
-          </button>
-        </div>
+        <transition name="fade">
+          <div v-if="search" class="absolute left-0 -bottom-12 w-full p-2 bg-white hover:bg-gray-50 transition rounded-lg shadow">
+            <button class="flex">
+              <svg class="mr-2" width="20" height="20" viewBox="0 0 24 24" id="v_enter"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 4a1 1 0 011 1v6a4 4 0 01-4 4H6.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 13H17a2 2 0 002-2V5a1 1 0 011-1z"></path></svg>
+              <span class="text-sm">Перейти к результатам</span>
+            </button>
+          </div>
+        </transition>
       </div>
       <button class="btn-white font-medium" @click="createNewPost">
         Новая запись

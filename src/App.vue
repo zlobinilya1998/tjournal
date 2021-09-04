@@ -23,10 +23,10 @@ export default {
     ...mapMutations(["setUser"]),
   },
   async mounted() {
-    // let user = await this.$axios
-    //   .get("user/profile/612e734dc194f45caf180d04")
-    //   .then((res) => res.data);
-    // this.setUser(user);
+    let user = await this.$axios
+      .get("user/profile/612e734dc194f45caf180d04")
+      .then((res) => res.data);
+    this.setUser(user);
   },
 };
 </script>

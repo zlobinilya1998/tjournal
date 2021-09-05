@@ -24,7 +24,7 @@ export default {
   },
   async mounted() {
     let user = await this.$axios
-      .get("user/profile/6133372129227e5c53be098f")
+      .get("user/profile/6133d404a739df53d08e428c")
       .then((res) => res.data);
     this.setUser(user);
   },
@@ -42,5 +42,8 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
+}
+body::-webkit-scrollbar {
+  width: 0;
 }
 </style>

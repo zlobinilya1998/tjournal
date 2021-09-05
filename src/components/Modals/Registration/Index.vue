@@ -332,7 +332,7 @@
                   transition
                   rounded-lg
                 "
-                :class="{'bg-blue-500': !$v.login.viaEmail.$invalid}"
+                :class="{ 'bg-blue-500': !$v.login.viaEmail.$invalid }"
               >
                 <span class="mr-2"> Войти </span>
                 <v-icon
@@ -363,15 +363,15 @@
           </p>
           <div class="mt-5 flex flex-col">
             <input
-              v-model="registration.viaEmail.login"
+              v-model="registration.viaEmail.name"
               class="mt-3 outline-none p-2 border-2 border-blue-200"
               :class="{
                 invalid:
-                  $v.registration.viaEmail.login.$dirty &&
-                  $v.registration.viaEmail.login.$invalid,
+                  $v.registration.viaEmail.name.$dirty &&
+                  $v.registration.viaEmail.name.$invalid,
               }"
               type="text"
-              placeholder="Имя и фамилия"
+              placeholder="Имя"
             />
             <div class="h-4">
               <transition-group name="fade" mode="in-out">
@@ -379,8 +379,8 @@
                   key="first"
                   class="error"
                   v-if="
-                    !$v.registration.viaEmail.login.required &&
-                    $v.registration.viaEmail.login.$dirty
+                    !$v.registration.viaEmail.name.required &&
+                    $v.registration.viaEmail.name.$dirty
                   "
                 >
                   Имя обязательное поле
@@ -389,12 +389,50 @@
                   key="second"
                   class="error"
                   v-if="
-                    !$v.registration.viaEmail.login.minLength &&
-                    $v.registration.viaEmail.login.$dirty
+                    !$v.registration.viaEmail.name.minLength &&
+                    $v.registration.viaEmail.name.$dirty
                   "
                 >
                   Имя должно быть не менее
-                  {{ $v.registration.viaEmail.login.$params.minLength.min }}
+                  {{ $v.registration.viaEmail.name.$params.minLength.min }}
+                  символов.
+                </div>
+              </transition-group>
+            </div>
+
+            <input
+                    v-model="registration.viaEmail.secondName"
+                    class="mt-3 outline-none p-2 border-2 border-blue-200"
+                    :class="{
+                invalid:
+                  $v.registration.viaEmail.secondName.$dirty &&
+                  $v.registration.viaEmail.secondName.$invalid,
+              }"
+                    type="text"
+                    placeholder="Фамилия"
+            />
+            <div class="h-4">
+              <transition-group name="fade" mode="in-out">
+                <div
+                        key="first"
+                        class="error"
+                        v-if="
+                    !$v.registration.viaEmail.secondName.required &&
+                    $v.registration.viaEmail.secondName.$dirty
+                  "
+                >
+                  Фамилия обязательное поле
+                </div>
+                <div
+                        key="second"
+                        class="error"
+                        v-if="
+                    !$v.registration.viaEmail.secondName.minLength &&
+                    $v.registration.viaEmail.secondName.$dirty
+                  "
+                >
+                  Фамилия должна быть не менее
+                  {{ $v.registration.viaEmail.secondName.$params.minLength.min }}
                   символов.
                 </div>
               </transition-group>
@@ -509,7 +547,8 @@ export default {
     },
     registration: {
       viaEmail: {
-        login: "",
+        name: "",
+        secondName: "",
         email: "",
         password: "",
       },
@@ -530,7 +569,11 @@ export default {
     },
     registration: {
       viaEmail: {
-        login: {
+        name: {
+          required,
+          minLength: minLength(4),
+        },
+        secondName: {
           required,
           minLength: minLength(4),
         },
@@ -565,8 +608,8 @@ export default {
         if (type === "email") {
           this.$axios
             .post("user/create", {
-              name: this.registration.viaEmail.login,
-              secondName: this.registration.viaEmail.login,
+              name: this.registration.viaEmail.name,
+              secondName: this.registration.viaEmail.secondName,
               password: this.registration.viaEmail.password,
               email: this.registration.viaEmail.email,
             })

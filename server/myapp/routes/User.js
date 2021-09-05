@@ -5,8 +5,7 @@ const Post = require("../models/Post");
 
 router.get("/profile/:id", async (req, res) => {
   let user = await User.findOne({ _id: req.params.id }).populate(
-    "subscriptions",
-    "_id"
+    "subscriptions"
   );
   res.send(user);
 });

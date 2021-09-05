@@ -59,7 +59,7 @@
                   @updated="updatePost"
           />
         </div>
-        <div v-else>Постов пока нет...</div>
+        <div v-else class="text-center mt-10 font-bold">Постов пока нет...</div>
       </div>
     </div>
     <Comments class="ml-auto w-3/12 lg:w-1/4" />

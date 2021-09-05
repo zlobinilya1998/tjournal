@@ -1,7 +1,7 @@
 <template>
   <div class="flex space-x-6 items-start">
     <div class="w-2/3 rounded-lg flex justify-center items-center">
-      <div v-if="posts" class="space-y-4">
+      <div v-if="posts" class="space-y-4 w-full">
         <Post v-for="post in posts" :key="post._id" :post="post" />
       </div>
       <p v-else>Здесь еще нет публикаций</p>

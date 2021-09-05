@@ -94,7 +94,7 @@
       </h3>
       <p class="mt-5">{{ post.subtitle }}</p>
     </div>
-    <img :src="pathToImg" class="h-72 w-full object-cover" />
+    <div v-html="post.html"/>
     <div class="p-3 flex justify-between">
       <span class="flex space-x-10">
         <div class="flex items-center">

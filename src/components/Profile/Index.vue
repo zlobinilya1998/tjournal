@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-1/2">
+  <div class="mx-auto md:w-5/6 lg:w-2/3 xl:w-1/2">
     <div class="bg-white p-5 pb-0 rounded-lg" v-if="profileUser">
       <div class="flex items-start justify-between">
         <div
@@ -170,22 +170,22 @@ export default {
         .replaceAll(".", " ");
     },
     isMyProfile() {
-      if (!this.user) return ;
+      if (!this.user) return;
       return this.profileUser._id === this.user._id;
     },
     subscribedOnProfileCreator() {
-      if (!this.user) return ;
+      if (!this.user) return;
       return this.user.subscriptions.some(
         (user) => user._id === this.profileUser._id
       );
     },
   },
   methods: {
-    ...mapMutations(["setUser","toggleRegistrationModal"]),
+    ...mapMutations(["setUser", "toggleRegistrationModal"]),
     subscribeOnUser() {
-      if (!this.user){
-        this.toggleRegistrationModal({show:true});
-        return
+      if (!this.user) {
+        this.toggleRegistrationModal({ show: true });
+        return;
       }
       this.loading = true;
       setTimeout(() => {
@@ -225,6 +225,13 @@ export default {
     this.$axios
       .get(`user/profile/${this.$route.params.id}`)
       .then((res) => (this.profileUser = res.data));
+  },
+  watch: {
+    $route(to) {
+      this.$axios
+        .get(`user/profile/${to.params.id}`)
+        .then((res) => (this.profileUser = res.data));
+    },
   },
 };
 </script>

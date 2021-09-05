@@ -9,6 +9,7 @@ const User = new Schema(
     password: { type: String, required: true },
     favorite: [{ type: ObjectId, ref: "Post" }],
     subscriptions: [{ type: ObjectId, ref: "User" }],
+    subscribers: [{ type: ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

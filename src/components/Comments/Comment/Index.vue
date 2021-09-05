@@ -4,16 +4,16 @@
       @click="postHolderProfile"
       class="flex items-center cursor-pointer hover:text-blue-400 transition"
     >
-      <div
-        class="mr-2 bg-cover rounded-lg w-6 h-6"
-        :style="{
-          backgroundImage: `url(${this.userAvatar})`,
-        }"
-      />
+      <img class="mr-2 rounded-lg w-6 h-6 object-cover" :src="userAvatar" />
       <span>{{ userName }}</span>
     </div>
     <p class="my-1 text-sm truncate">{{ comment.text }}</p>
-    <p class="font-medium text-sm cursor-pointer hover:text-blue-400 transition" @click="postPage">{{ comment.post.title }}</p>
+    <p
+      class="font-medium text-sm cursor-pointer hover:text-blue-400 transition"
+      @click="postPage"
+    >
+      {{ comment.post.title }}
+    </p>
   </div>
 </template>
 
@@ -37,8 +37,11 @@ export default {
         params: { id: this.comment.user._id },
       });
     },
-    postPage(){
-      this.$router.push({name:'post',params:{id:this.comment.post._id}})
+    postPage() {
+      this.$router.push({
+        name: "post",
+        params: { id: this.comment.post._id },
+      });
     },
   },
 };

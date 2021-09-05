@@ -19,7 +19,7 @@
           </h3>
           <p class="mt-5 text-md">{{ post.subtitle }}</p>
         </div>
-        <img :src="pathToImg" />
+        <img :src="pathToImg" class="h-96 w-full object-cover" />
         <div class="p-3 flex justify-between px-48 py-10">
           <span class="flex space-x-10">
             <div class="flex items-center">

@@ -4,11 +4,10 @@ const Post = new Schema(
   {
     img: { type: String, required: true },
     icon: { type: String, required: true },
-    title: { type: String, required: true },
-    subtitle: { type: String, required: true },
+    html: { type: String, required: true },
     category: { type: String, required: true },
-    likes: { type: Number, default: 0 },
     user: { type: ObjectId, ref: "User", required: true },
+    likes: { type: Number, default: 0 },
     comments: [{ type: ObjectId, ref: "Comment" }],
     reposts: [{ type: ObjectId, ref: "Repost" }],
   },

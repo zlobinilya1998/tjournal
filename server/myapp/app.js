@@ -15,6 +15,7 @@ app.use("/api/posts", require("./routes/Post"));
 app.use("/api/user", require("./routes/User"));
 app.use("/api/upload", require("./routes/Upload"));
 app.use("/api/category", require("./routes/Category"));
+
 app.use("/api/comments", require("./routes/Comments"));
 app.use("/api/search", require("./routes/Search"));
 

@@ -24,9 +24,11 @@ export default {
   },
   async mounted() {
     let user = await this.$axios
-      .get("user/profile/6133d404a739df53d08e428c")
+      .get("user/profile/613523a3ad32fda1e1f3e483")
       .then((res) => res.data);
     this.setUser(user);
+    // 6133d404a739df53d08e428c
+    // 613523a3ad32fda1e1f3e483
   },
 };
 </script>

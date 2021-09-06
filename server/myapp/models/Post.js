@@ -4,6 +4,7 @@ const Post = new Schema(
   {
     img: { type: String, required: true },
     icon: { type: String, required: true },
+    title: { type: String, required: true },
     html: { type: String, required: true },
     category: { type: String, required: true },
     user: { type: ObjectId, ref: "User", required: true },

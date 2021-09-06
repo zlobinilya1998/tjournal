@@ -68,9 +68,9 @@
     </div>
     <div v-if="user" class="flex items-center">
       <svg
-        class="mr-4"
-        height="24"
-        width="24"
+        class="mr-4 hover:text-yellow-500 fill-current cursor-pointer"
+        height="20"
+        width="20"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 21 19"
       >
@@ -84,19 +84,19 @@
           ></path>
         </g>
       </svg>
-      <svg class="mr-4" height="24" width="24" viewBox="0 0 16 17">
+      <svg class="mr-4 hover:text-yellow-500 fill-current cursor-pointer" height="20" width="20" viewBox="0 0 16 17">
         <path
           fill-rule="evenodd"
           d="M15.49 13.802l.055.047v.066c0 .745-.581 1.078-1.3 1.078H9.468c0 .943-.786 2.007-1.695 2.007-.91 0-1.739-1.064-1.739-2.007H1.336C.618 14.993 0 14.66 0 13.915v-.066l.055-.047C2.009 12.179 3 9.585 3 6.085c0-1.783 1.318-3.887 3.782-4.359a.667.667 0 01-.055-.264c0-.528.491-.99 1.046-.99.554 0 1.045.462 1.045.99a.667.667 0 01-.054.264c2.463.472 3.781 2.576 3.781 4.359 0 3.5.991 6.094 2.946 7.717zM7.774 3.113c-2.41 0-3.41 1.88-3.41 2.888 0 3.236-.718 5.683-2.2 7.47h11.219c-1.482-1.787-2.2-4.234-2.2-7.47 0-1.009-1-2.888-3.41-2.888"
         ></path>
       </svg>
       <div
-        class="mr-2 bg-cover rounded-lg w-10 h-10"
+        class="mr-2 bg-cover rounded-lg w-10 h-10 cursor-pointer"
         :style="{
           backgroundImage: `url(${this.userAvatar})`,
         }"
       />
-      <svg height="7" width="12" viewBox="0 0 18 11" id="ui_arrow_down">
+      <svg class="cursor-pointer hover:text-yellow-500 fill-current" height="7" width="10" viewBox="0 0 18 11" id="ui_arrow_down">
         <path
           fill-rule="evenodd"
           d="M8.109 10.41L.369 2.265a1.377 1.377 0 010-1.876 1.217 1.217 0 011.783 0L9 7.594 15.848.39a1.217 1.217 0 011.783 0 1.377 1.377 0 010 1.876L9.89 10.41c-.246.26-.57.39-.891.39-.322 0-.645-.132-.89-.39h-.001z"

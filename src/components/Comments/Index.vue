@@ -17,18 +17,19 @@
         ></path>
       </svg>
     </div>
-    <transition name="fade">
-      <div class="mt-5" v-if="show">
+    <transition-group name="fade">
+      <div key="first" class="mt-5" v-if="show && comments.length">
         <Comment v-for="comment in comments" :comment="comment" :key="comment._id"/>
       </div>
-    </transition>
+      <div key="second" v-else class="text-sm">Комментариев пока нет...</div>
+    </transition-group>
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    comments: null,
+    comments: [],
     show:true,
   }),
   mounted() {

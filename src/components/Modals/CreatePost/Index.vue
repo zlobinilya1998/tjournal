@@ -1,9 +1,6 @@
 <template>
   <div class="fixed inset-0 overlay" @click="closeModal">
-    <div
-      class="bg-white p-5 modal rounded-lg flex flex-col max-h-full"
-      ref="modal"
-    >
+    <div class="bg-white modal rounded-lg flex flex-col max-h-full" ref="modal">
       <div class="absolute right-2 top-2">
         <svg
           class="cursor-pointer"
@@ -20,7 +17,7 @@
           ></path>
         </svg>
       </div>
-      <div class="flex h-8 space-x-4 items-center">
+      <div class="p-5 flex space-x-4 items-center">
         <div class="flex items-center space-x-2">
           <select v-model="newPostForm.category" class="outline-none w-24">
             <option disabled value="">Выберите категорию</option>
@@ -47,8 +44,14 @@
         <input type="file" ref="file" name="file" @change="selectFile" />
         <input type="file" ref="img" name="file" @change="selectImg" />
       </form>
+      <input
+        type="text"
+        v-model="newPostForm.title"
+        placeholder="Заголовок поста"
+        class="outline-none p-5 pt-0 font-bold text-xl"
+      />
       <div ref="editor" class="editor flex-1" />
-      <div class="flex space-x-2">
+      <div class="flex space-x-2 p-5">
         <button
           class="
             bg-blue-300
@@ -58,17 +61,22 @@
             rounded-lg
             text-white
           "
-          :class="{ 'bg-blue-500': newPostForm.title && newPostForm.subtitle }"
+          :class="{ 'bg-blue-500': !$v.newPostForm.$invalid }"
+          :disabled="loading || $v.newPostForm.$invalid"
           @click="createPost"
-          :disabled="loading"
         >
           Опубликовать
           <v-icon v-if="loading" animation="spin" name="fa-spinner" />
         </button>
-        <button class="p-2 bg-white shadow rounded-lg hover:text-blue-500 transition">
+        <button
+          class="p-2 bg-white shadow rounded-lg hover:text-blue-500 transition"
+        >
           <v-icon name="fa-eye" />
         </button>
-        <button class="p-2 bg-white shadow rounded-lg hover:text-blue-500 transition">
+        <button
+          class="p-2 bg-white shadow rounded-lg hover:text-blue-500 transition"
+          @click="trimText"
+        >
           <v-icon name="fa-pen" />
         </button>
       </div>
@@ -78,11 +86,14 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
+import { required } from "vuelidate/lib/validators";
+
 export default {
   data: () => ({
     loading: false,
     newPostForm: {
-      img: "home.webp",
+      img: "",
+      title: "",
       icon: "",
       category: "",
       user: "",
@@ -91,6 +102,22 @@ export default {
       categories: null,
     },
   }),
+  validations: {
+    newPostForm: {
+      title: {
+        required,
+      },
+      img: {
+        required,
+      },
+      icon: {
+        required,
+      },
+      category: {
+        required,
+      },
+    },
+  },
   methods: {
     ...mapMutations(["toggleCreatePostModal"]),
     createTitle() {
@@ -99,12 +126,11 @@ export default {
       h.classList.add("outline-none", "font-bold", "text-xl", "mb-5", "pl-5");
       h.innerText = "Заголовок";
       this.$refs.editor.appendChild(h);
-      console.log(this.$refs.editor.childNodes);
     },
     createParagraph() {
       let p = document.createElement("p");
       p.contentEditable = true;
-      p.classList.add("outline-none", "my-3", "pl-5", "text-medium");
+      p.classList.add("outline-none", "my-3", "text-medium", "pl-5");
       p.innerText = "Текст";
       this.$refs.editor.appendChild(p);
     },
@@ -113,6 +139,14 @@ export default {
       img.src = this.webRoutes.postImg + src;
       img.classList.add("w-full", "my-3", "object-cover");
       this.$refs.editor.appendChild(img);
+    },
+    trimText() {
+      this.newPostForm.title = this.newPostForm.title.replace(/\s+/g, " ").trim()
+      let nodes = this.$refs.editor.childNodes;
+      if (!nodes.length) return;
+      nodes.forEach((node) => {
+        node.innerText = node.innerText.replace(/\s+/g, " ").trim();
+      });
     },
     async selectFile() {
       const formData = new FormData();
@@ -201,7 +235,6 @@ export default {
   transform: translate(-50%, -50%) scale(0);
 }
 .editor {
-  @apply my-8;
   max-height: 400px;
   max-width: 600px;
   overflow-y: scroll;

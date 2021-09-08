@@ -541,16 +541,16 @@ export default {
     step: 0,
     login: {
       viaEmail: {
-        email: "",
-        password: "",
+        email: "qwertin1998@gmail.com",
+        password: "123456",
       },
     },
     registration: {
       viaEmail: {
-        name: "",
-        secondName: "",
-        email: "",
-        password: "",
+        name: "Илья",
+        secondName: "Злобин",
+        email: "qwertin1998@gmail.com",
+        password: "123456",
       },
     },
   }),
@@ -607,7 +607,7 @@ export default {
       setTimeout(() => {
         if (type === "email") {
           this.$axios
-            .post("user/create", {
+            .post("user", {
               name: this.registration.viaEmail.name,
               secondName: this.registration.viaEmail.secondName,
               password: this.registration.viaEmail.password,
@@ -616,6 +616,7 @@ export default {
             .then((res) => {
               this.setUser(res.data);
               this.toggleRegistrationModal({ show: false });
+              console.log('then')
             })
             .catch((e) => {
               console.log(e);
@@ -635,14 +636,21 @@ export default {
       setTimeout(() => {
         if (type === "email") {
           this.$axios
-            .post("user/login", {
+            .post("auth/login", {
               email: this.login.viaEmail.email,
               password: this.login.viaEmail.password,
             })
             .then((res) => {
-              this.setUser(res.data);
-              this.toggleRegistrationModal({ show: false });
-            })
+              sessionStorage.setItem('Authorization','Bearer ' + res.data.token);
+              this.$axios.defaults.headers.common["Authorization"] =
+                sessionStorage.getItem("Authorization");
+              this.$axios
+                .post("auth")
+                .then((res) => this.setUser(res.data))
+                .catch((e) => console.log(e))
+                .finally(() => {
+                  this.toggleRegistrationModal({ show: false })});
+                })
             .catch((e) => {
               console.log(e);
             })

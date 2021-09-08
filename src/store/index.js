@@ -23,8 +23,9 @@ export default new Vuex.Store({
       },
     },
     webRoutes: {
-      userAvatar: "http://localhost:3000/static/images/avatar/",
-      postImg: "http://localhost:3000/static/images/news/",
+      userAvatar: "http://localhost:3000/",
+      postImg: "http://localhost:3000/",
+      img: "http://localhost:3000/",
     },
   },
   mutations: {

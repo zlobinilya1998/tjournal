@@ -41,11 +41,11 @@ export default {
       try {
         let { data } = await this.$axios.get("comments/subscribe")
         this.comments = data;
-        await this.subscribeOnNewComments();
+        // await this.subscribeOnNewComments();
       } catch (e) {
         setTimeout(() => {
-          this.subscribeOnNewComments();
-        }, 500);
+          // this.subscribeOnNewComments();
+        }, 5000);
       }
     }
   },

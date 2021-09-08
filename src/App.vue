@@ -22,13 +22,15 @@ export default {
   methods: {
     ...mapMutations(["setUser"]),
   },
-  async mounted() {
-    let user = await this.$axios
-      .get("user/profile/613523a3ad32fda1e1f3e483")
-      .then((res) => res.data);
-    this.setUser(user);
-    // 6133d404a739df53d08e428c
-    // 613523a3ad32fda1e1f3e483
+  beforeMount() {
+    if (sessionStorage.getItem("Authorization")) {
+      this.$axios.defaults.headers.common["Authorization"] =
+        sessionStorage.getItem("Authorization");
+      this.$axios
+        .post("auth")
+        .then((res) => this.setUser(res.data))
+        .catch((e) => console.log(e));
+    }
   },
 };
 </script>

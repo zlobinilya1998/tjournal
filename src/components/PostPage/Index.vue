@@ -17,10 +17,10 @@
           <h3 class="font-bold text-4xl mt-3">
             {{ post.title }}
           </h3>
-          <p class="mt-5 text-md">{{ post.subtitle }}</p>
         </div>
         <img :src="pathToImg" class="h-96 w-full object-cover" />
-        <div class="p-3 flex justify-between px-48 py-10">
+        <div v-html="post.html" />
+        <div class="p-3 flex justify-between px-48 py-5">
           <span class="flex space-x-10">
             <div class="flex items-center">
               <svg
@@ -101,7 +101,7 @@
                 d="M20.831 7.067a1.25 1.25 0 00-1.764.103l-7.029 7.907a.046.046 0 01-.016.013.054.054 0 01-.021.004.054.054 0 01-.021-.004.046.046 0 01-.017-.013l-.921.82.921-.82L4.935 7.17a1.25 1.25 0 10-1.868 1.661l7.028 7.907a2.55 2.55 0 003.812 0l7.028-7.907a1.25 1.25 0 00-.104-1.764z"
               ></path>
             </svg>
-            <p>{{ post.likes }}</p>
+            <p>{{ post.likes.length }}</p>
             <svg
               @click="like"
               class="opacity-75 cursor-pointer"
@@ -167,21 +167,23 @@
         <div v-for="comment in post.comments" :key="comment._id" class="mb-5">
           <div class="flex justify-between items-start">
             <div class="flex items-center">
-              <div
-                class="mr-2 bg-cover rounded-lg w-8 h-8"
-                :style="{
-                  backgroundImage: `url(http://localhost:3000/static/images/avatar/${comment.user.avatar})`,
-                }"
-              />
-              <span class="font-medium">{{
-                comment.user.name + " " + comment.user.secondName
-              }}</span>
+              <div @click="commentHolderProfile(comment.user._id)" class="flex items-center cursor-pointer">
+                <div
+                  class="mr-2 bg-cover rounded-lg w-8 h-8"
+                  :style="{
+                    backgroundImage: `url(${webRoutes.img}${comment.user.avatar})`,
+                  }"
+                />
+                <span class="font-medium">{{
+                  comment.user.name + " " + comment.user.secondName
+                }}</span>
+              </div>
             </div>
             <p
               class="p-1 px-4 bg-gray-100 rounded-md text-sm font-medium"
               :class="{ 'bg-green-100 text-green-700': comment.likes > 0 }"
             >
-              {{ comment.likes }}
+              {{ comment.likes.length }}
             </p>
           </div>
           <p class="mt-2">{{ comment.text }}</p>
@@ -200,7 +202,7 @@ export default {
     loading: false,
   }),
   computed: {
-    ...mapGetters(["user","webRoutes"]),
+    ...mapGetters(["user", "webRoutes"]),
     pathToImg() {
       return this.webRoutes.postImg + this.post.img;
     },
@@ -226,9 +228,8 @@ export default {
       this.loading = true;
       setTimeout(() => {
         this.$axios
-          .post("comments/create", {
-            _id: this.post._id,
-            userId: this.user._id,
+          .post("comment", {
+            post: this.post._id,
             text: this.newComment,
           })
           .then((res) => {
@@ -251,10 +252,16 @@ export default {
         params: { id: this.post.user._id },
       });
     },
+    commentHolderProfile(id) {
+      this.$router.push({
+        name: "profile",
+        params: { id },
+      });
+    },
   },
   mounted() {
     this.$axios
-      .get(`posts/post/${this.$route.params.id}`)
+      .get(`post/${this.$route.params.id}`)
       .then((res) => (this.post = res.data));
   },
 };

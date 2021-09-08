@@ -1,6 +1,30 @@
 <template>
   <div class="fixed inset-0 overlay" @click="closeModal">
     <div class="bg-white modal rounded-lg flex flex-col max-h-full" ref="modal">
+      <div
+        class="absolute h-full w-full z-10 rounded-lg"
+        :class="{ hidden: !showPreview }"
+      >
+        <img ref="preview" class="w-full h-full object-cover rounded-md" />
+        <button
+          @click="showPreview = false"
+          class="
+            absolute
+            top-0
+            bg-blue-500
+            hover:bg-blue-700
+            transition
+            p-1
+            px-2
+            m-3
+            rounded-lg
+            text-white
+          "
+        >
+          <v-icon name="fa-arrow-left" scale=".85" />
+          <span> Вернуться </span>
+        </button>
+      </div>
       <div class="absolute right-2 top-2">
         <svg
           class="cursor-pointer"
@@ -19,19 +43,9 @@
       </div>
       <div class="p-5 flex space-x-4 items-center">
         <div class="flex items-center space-x-2">
-          <select v-model="newPostForm.category" class="outline-none w-24">
-            <option disabled value="">Выберите категорию</option>
-            <option v-for="option in options.categories" :key="option._id">
-              {{ option.name }}
-            </option>
-          </select>
-          <transition name="fade" mode="out-in">
-            <v-icon
-              v-if="newPostForm.icon"
-              :name="newPostForm.icon"
-              :key="newPostForm.icon"
-            />
-          </transition>
+          <v-select v-if="options.categories" @input="changeCategory" label="name" :options="options.categories">
+            <template #header><span class="text-sm">Выберите категорию</span> </template>
+          </v-select>
         </div>
         <Toolbar
           @createTitle="createTitle"
@@ -39,10 +53,30 @@
           @createPostBackground="$refs.file.click()"
           @createImg="$refs.img.click()"
         />
+        <button
+          v-if="newPostForm.img"
+          @click="showPreview = true"
+          class="
+            bg-blue-500
+            hover:bg-blue-700
+            transition
+            p-1
+            px-2
+            rounded-lg
+            text-white
+          "
+        >
+          Превью картинки
+        </button>
       </div>
       <form method="post" enctype="multipart/form-data" class="hidden">
-        <input type="file" ref="file" name="file" @change="selectFile" />
-        <input type="file" ref="img" name="file" @change="selectImg" />
+        <input
+          type="file"
+          ref="file"
+          name="file"
+          @change="uploadPostBackground"
+        />
+        <input type="file" ref="img" name="file" @change="uploadImage" />
       </form>
       <input
         type="text"
@@ -91,12 +125,12 @@ import { required } from "vuelidate/lib/validators";
 export default {
   data: () => ({
     loading: false,
+    showPreview: false,
     newPostForm: {
       img: "",
       title: "",
       icon: "",
       category: "",
-      user: "",
     },
     options: {
       categories: null,
@@ -120,17 +154,26 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleCreatePostModal"]),
+    changeCategory(e){
+      if (e === null){
+        this.newPostForm.icon = '';
+        this.newPostForm.category = '';
+        return;
+      }
+      this.newPostForm.icon = e.icon;
+      this.newPostForm.category = e.name;
+    },
     createTitle() {
       let h = document.createElement("h3");
       h.contentEditable = true;
-      h.classList.add("outline-none", "font-bold", "text-xl", "mb-5", "pl-5");
+      h.classList.add("outline-none", "font-bold", "text-lg", "m-5");
       h.innerText = "Заголовок";
       this.$refs.editor.appendChild(h);
     },
     createParagraph() {
       let p = document.createElement("p");
       p.contentEditable = true;
-      p.classList.add("outline-none", "my-3", "text-medium", "pl-5");
+      p.classList.add("outline-none", "m-3", "ml-5", "text-medium");
       p.innerText = "Текст";
       this.$refs.editor.appendChild(p);
     },
@@ -141,23 +184,25 @@ export default {
       this.$refs.editor.appendChild(img);
     },
     trimText() {
-      this.newPostForm.title = this.newPostForm.title.replace(/\s+/g, " ").trim()
+      this.newPostForm.title = this.newPostForm.title
+        .replace(/\s+/g, " ")
+        .trim();
       let nodes = this.$refs.editor.childNodes;
       if (!nodes.length) return;
       nodes.forEach((node) => {
         node.innerText = node.innerText.replace(/\s+/g, " ").trim();
       });
     },
-    async selectFile() {
+    async uploadPostBackground() {
       const formData = new FormData();
       formData.append("file", this.$refs.file.files[0]);
-      const { data } = await this.$axios.post("upload", formData);
+      const { data } = await this.$axios.post("files", formData);
       this.newPostForm.img = data;
     },
-    async selectImg() {
+    async uploadImage() {
       const formData = new FormData();
       formData.append("file", this.$refs.img.files[0]);
-      const { data } = await this.$axios.post("upload", formData);
+      const { data } = await this.$axios.post("files", formData);
       this.createImg(data);
     },
     createPost() {
@@ -167,12 +212,9 @@ export default {
       this.loading = true;
       setTimeout(() => {
         this.$axios
-          .post("posts/create", {
-            newPost: {
-              ...this.newPostForm,
-              user: this.user,
-              html: this.$refs.editor.getInnerHTML(),
-            },
+          .post("post", {
+            ...this.newPostForm,
+            html: this.$refs.editor.getInnerHTML(),
           })
           .then(() => {
             this.closeModal(null, true);
@@ -197,10 +239,8 @@ export default {
   watch: {
     newPostForm: {
       handler(value) {
-        if (value.category) {
-          this.newPostForm.icon = this.options.categories.find(
-            (category) => category.name === value.category
-          ).icon;
+        if (value.img) {
+          this.$refs.preview.src = `${this.webRoutes.img}${value.img}`;
         }
       },
       deep: true,

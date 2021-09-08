@@ -224,7 +224,7 @@ export default {
   mounted() {
     console.log('mounted')
     this.$axios
-      .get(`user/profile/${this.$route.params.id}`)
+      .get(`user/${this.$route.params.id}`)
       .then((res) => (this.profileUser = res.data));
   },
   watch: {

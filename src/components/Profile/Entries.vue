@@ -72,7 +72,7 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get("user/posts/" + this.$route.params.id).then((res) => {
+    this.$axios.get("post/user/" + this.$route.params.id).then((res) => {
       this.posts = res.data;
     });
   },

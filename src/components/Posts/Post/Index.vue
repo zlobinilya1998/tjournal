@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-lg">
-    <div class="p-5">
+    <div class="p-5 pb-0">
       <div class="flex justify-between items-center">
         <div>
           <v-icon :name="post.icon" class="mr-2" fill="blue" />
@@ -94,6 +94,7 @@
       </h3>
       <p class="mt-5">{{ post.subtitle }}</p>
     </div>
+    <img :src="pathToImg" class="h-96 w-full object-cover" />
     <div v-html="post.html" />
     <div class="p-3 flex justify-between">
       <span class="flex space-x-10">
@@ -178,7 +179,7 @@
             d="M20.831 7.067a1.25 1.25 0 00-1.764.103l-7.029 7.907a.046.046 0 01-.016.013.054.054 0 01-.021.004.054.054 0 01-.021-.004.046.046 0 01-.017-.013l-.921.82.921-.82L4.935 7.17a1.25 1.25 0 10-1.868 1.661l7.028 7.907a2.55 2.55 0 003.812 0l7.028-7.907a1.25 1.25 0 00-.104-1.764z"
           ></path>
         </svg>
-        <p>{{ post.likes }}</p>
+        <p>{{ post.likes.length }}</p>
         <svg
           @click="like"
           class="opacity-75 cursor-pointer fill-current transition"
@@ -211,7 +212,7 @@ export default {
   computed: {
     ...mapGetters(["user", "webRoutes"]),
     pathToImg() {
-      return this.webRoutes.postImg + this.post.img;
+      return this.webRoutes.img + this.post.img;
     },
     postCreatedByMySelf() {
       if (!this.user) return;

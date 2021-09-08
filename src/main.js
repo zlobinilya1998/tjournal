@@ -3,7 +3,14 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./index.css";
-import { AOS, VueAxios, axios, OhVueIcon, Vuelidate } from "./plugins/index";
+import {
+  AOS,
+  VueAxios,
+  axios,
+  OhVueIcon,
+  Vuelidate,
+  vSelect,
+} from "./plugins/index";
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
@@ -17,6 +24,7 @@ Vue.prototype.$axios = axios.create(axiosConfig);
 
 //Register global component
 Vue.component("v-icon", OhVueIcon);
+Vue.component("v-select", vSelect);
 
 new Vue({
   router,

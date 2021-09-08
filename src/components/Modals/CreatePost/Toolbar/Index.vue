@@ -4,7 +4,7 @@
       <v-icon
         name="fa-plus"
         class="cursor-pointer transition"
-        scale="0.75"
+        scale="1"
         :style="{ transform: show ? 'rotate(45deg)' : '' }"
       />
     </span>

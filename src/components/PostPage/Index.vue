@@ -1,8 +1,8 @@
 <template>
-  <div class="w-2/3 mx-auto" v-if="post">
+  <div class="md:w-2/3 mx-auto" v-if="post">
     <div class="bg-white rounded-lg">
       <div class="mt-5 bg-white rounded-lg">
-        <div class="p-5 px-48">
+        <div class="p-5 lg:px-48">
           <div class="flex justify-between items-center">
             <div>
               <v-icon :name="post.icon" class="mr-2" fill="blue" />
@@ -14,14 +14,14 @@
               >
             </div>
           </div>
-          <h3 class="font-bold text-4xl mt-3">
+          <h3 class="font-bold text-2xl lg:text-4xl mt-3">
             {{ post.title }}
           </h3>
         </div>
-        <img :src="pathToImg" class="h-96 w-full object-cover" />
+        <img :src="pathToImg" class="h-56 lg:h-96 w-full object-cover" />
         <div v-html="post.html" />
-        <div class="p-3 flex justify-between px-48 py-5">
-          <span class="flex space-x-10">
+        <div class="p-3 flex justify-between lg:px-48 py-5">
+          <span class="flex space-x-5 md:space-x-10">
             <div class="flex items-center">
               <svg
                 class="opacity-75 cursor-pointer"
@@ -120,7 +120,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-white rounded-lg mt-8 p-5 px-48">
+    <div class="bg-white rounded-lg mt-8 p-5 lg:px-48">
       <h3 class="font-bold text-lg">
         {{
           post.comments.length > 0
@@ -128,7 +128,16 @@
             : "Комментариев пока нет"
         }}
       </h3>
-      <div class="flex items-center space-x-4 my-5">
+      <div
+        class="
+          flex flex-col
+          sm:flex-row
+          items-center
+          space-y-2
+          sm:space-y-0 sm:space-x-4
+          my-5
+        "
+      >
         <input
           v-model="newComment"
           type="text"
@@ -144,6 +153,8 @@
         <button
           @click="createComment"
           class="
+            w-full
+            sm:w-max
             bg-blue-300
             hover:bg-blue-500
             transition
@@ -151,6 +162,7 @@
             rounded-lg
             text-white
             flex
+            justify-center
             items-center
           "
           :disabled="!newComment"
@@ -167,7 +179,10 @@
         <div v-for="comment in post.comments" :key="comment._id" class="mb-5">
           <div class="flex justify-between items-start">
             <div class="flex items-center">
-              <div @click="commentHolderProfile(comment.user._id)" class="flex items-center cursor-pointer">
+              <div
+                @click="commentHolderProfile(comment.user._id)"
+                class="flex items-center cursor-pointer"
+              >
                 <div
                   class="mr-2 bg-cover rounded-lg w-8 h-8"
                   :style="{
@@ -187,6 +202,9 @@
             </p>
           </div>
           <p class="mt-2">{{ comment.text }}</p>
+          <p class="text-gray-400 text-xs hover:underline cursor-pointer">
+            {{ commentDate(comment.createdAt) }}
+          </p>
         </div>
       </div>
     </div>
@@ -214,6 +232,16 @@ export default {
     },
   },
   methods: {
+    commentDate(date) {
+      if (!date) return;
+      return (
+        "в " +
+        new Date(date).toLocaleTimeString("ru-Ru", {
+          hour: "numeric",
+          minute: "numeric",
+        })
+      );
+    },
     like() {
       this.$axios.put("posts/like", { _id: this.post._id }).then((res) => {
         this.$emit("updated", res.data);
@@ -234,7 +262,11 @@ export default {
           })
           .then((res) => {
             this.post = res.data;
+            this.$toast.open("Комментарий успешно создан!");
             this.newComment = "";
+          })
+          .catch(() => {
+            this.$toast.error("Что-то пошло не так...");
           })
           .finally(() => {
             this.loading = false;

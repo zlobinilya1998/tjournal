@@ -2,7 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-
 export default new Vuex.Store({
   state: {
     user: null,
@@ -27,9 +26,11 @@ export default new Vuex.Store({
       postImg: "http://localhost:3000/",
       img: "http://localhost:3000/",
     },
+    newPostsCount: 0,
   },
   mutations: {
     setUser: (state, payload) => (state.user = payload),
+    setNewPostsCount: (state, payload) => (state.newPostsCount = payload),
     toggleConfigureNewsModal: (state, payload) =>
       (state.modals.configureNews = payload),
     toggleRegistrationModal: (state, payload) =>
@@ -41,6 +42,7 @@ export default new Vuex.Store({
   },
   getters: {
     user: (state) => state.user,
+    newPostsCount: (state) => state.newPostsCount,
     leftSideBar: (state) => state.menu.leftSidebar,
     modals: (state) => state.modals,
     webRoutes: (state) => state.webRoutes,

@@ -1,9 +1,28 @@
 <template>
   <div class="lg:w-3/4 flex ml-auto">
-    <div class="w-8/12 lg:w-2/4">
-      <div class="rounded-lg p-5 bg-white flex justify-between">
+    <div class="w-full md:w-8/12 lg:w-2/4">
+      <div
+        class="
+          rounded-lg
+          p-5
+          bg-white
+          flex
+          justify-between
+          items-start
+          transition
+        "
+      >
         <p class="font-bold">{{ today }}</p>
-        <div class="font-light flex items-center">
+        <div
+          @click="collapsed = !collapsed"
+          class="
+            font-light
+            flex
+            items-center
+            hover:text-blue-400
+            cursor-pointer
+          "
+        >
           <svg
             class="mr-2"
             width="9"
@@ -62,6 +81,31 @@
           animation="spin"
         />
         <div v-else-if="posts && posts.length" class="mt-5 space-y-8">
+          <div
+            @click="fetchPosts"
+            v-if="newPostsCount"
+            class="
+              bg-white
+              hover:bg-blue-500 hover:text-white
+              font-bold
+              transition
+              p-5
+              rounded-lg
+              flex
+              justify-center
+              items-center
+              cursor-pointer
+            "
+          >
+            <p class="mr-3">Кол-во новых постов</p>
+            <v-icon
+              v-if="loading"
+              name="fa-spinner"
+              :scale="1"
+              animation="spin"
+            />
+            <span v-else>{{ newPostsCount }}</span>
+          </div>
           <Post
             v-for="post in posts"
             :key="post._id"
@@ -72,7 +116,7 @@
         <div v-else class="text-center mt-10 font-bold">Постов пока нет...</div>
       </div>
     </div>
-    <Comments class="ml-auto w-3/12 lg:w-1/4" />
+    <Comments class="hidden md:block ml-auto w-3/12 lg:w-1/4" />
   </div>
 </template>
 
@@ -83,13 +127,14 @@ export default {
     posts: null,
     filter: "latest",
     loading: false,
+    collapsed: false,
   }),
   components: {
     Post: () => import("@/components/Posts/Post/Index"),
     Comments: () => import("@/components/Comments/Index"),
   },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "newPostsCount"]),
     today: () =>
       new Date()
         .toLocaleDateString("ru-Ru", {
@@ -112,16 +157,24 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["toggleConfigureNewsModal", "toggleRegistrationModal"]),
+    ...mapMutations([
+      "toggleConfigureNewsModal",
+      "toggleRegistrationModal",
+      "setNewPostsCount",
+    ]),
     fetchPosts() {
-      this.$axios
-        .get("post")
-        .then((res) => {
-          this.posts = res.data;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      this.loading = true;
+      setTimeout(() => {
+        this.$axios
+          .get("post")
+          .then((res) => {
+            this.posts = res.data;
+            this.setNewPostsCount(0);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }, 1500);
     },
     sortBy(value) {
       this.filter = value;
@@ -152,18 +205,7 @@ export default {
     },
   },
   mounted() {
-    this.loading = true;
-    setTimeout(() => {
-      this.$axios
-        .get("post")
-        .then((res) => {
-          this.posts = res.data;
-          // this.subscribeOnNewPosts();
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    }, 1500);
+    this.fetchPosts();
   },
 };
 </script>

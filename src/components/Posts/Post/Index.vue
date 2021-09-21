@@ -136,6 +136,7 @@
           }}</span>
         </div>
         <svg
+          @click="addInFavorite"
           class="opacity-75 cursor-pointer"
           width="24"
           height="24"
@@ -162,27 +163,14 @@
           ></path>
         </svg>
       </span>
-      <span class="flex space-x-3">
-        <svg
-          @click="dislike"
-          class="opacity-75 cursor-pointer fill-current transition"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          id="v_arrow_down"
-          ref="dislike"
-        >
-          <path
-            class="transition"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M20.831 7.067a1.25 1.25 0 00-1.764.103l-7.029 7.907a.046.046 0 01-.016.013.054.054 0 01-.021.004.054.054 0 01-.021-.004.046.046 0 01-.017-.013l-.921.82.921-.82L4.935 7.17a1.25 1.25 0 10-1.868 1.661l7.028 7.907a2.55 2.55 0 003.812 0l7.028-7.907a1.25 1.25 0 00-.104-1.764z"
-          ></path>
-        </svg>
+      <span class="flex space-x-3 items-center">
         <p>{{ post.likes.length }}</p>
         <svg
           @click="like"
           class="opacity-75 cursor-pointer fill-current transition"
+          :class="{
+            'text-green-500': isPostLiked,
+          }"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -224,19 +212,25 @@ export default {
         (user) => user._id === this.post.user._id
       );
     },
+    isPostLiked() {
+      if (!this.user) return;
+      return this.post.likes.some((item) => item._id === this.user._id);
+    },
   },
   methods: {
     ...mapMutations(["setUser", "toggleRegistrationModal"]),
     like() {
-      this.$axios.put("posts/like", { _id: this.post._id }).then((res) => {
+      if (this.post.likes.some((item) => item._id === this.user._id)) return;
+      this.$axios.patch("post/like", { id: this.post._id }).then((res) => {
         this.$emit("updated", res.data);
       });
     },
-    dislike() {
-      if (this.post.likes === 0) return;
-      this.$axios.put("posts/dislike", { _id: this.post._id }).then((res) => {
-        this.$emit("updated", res.data);
-      });
+    addInFavorite() {
+      if (this.user.favorites.some(item => item._id === this.post._id)){
+        this.$axios.post("favorite/remove",{post:this.post}).then(({data}) => this.setUser(data));
+      } else {
+        this.$axios.post("favorite/add",{post:this.post}).then(({data}) => this.setUser(data));
+      }
     },
     createRepost() {
       this.$axios
@@ -296,17 +290,7 @@ export default {
   },
   watch: {
     post(newVal, oldVal) {
-      if (newVal.likes > oldVal.likes) {
-        this.$refs.like.classList.add("text-green-500");
-        setTimeout(() => {
-          this.$refs.like.classList.remove("text-green-500");
-        }, 2500);
-      } else if (newVal.likes < oldVal.likes) {
-        this.$refs.dislike.classList.add("text-red-500");
-        setTimeout(() => {
-          this.$refs.dislike.classList.remove("text-red-500");
-        }, 2500);
-      }
+      console.log(oldVal, "post changed", newVal);
     },
   },
 };

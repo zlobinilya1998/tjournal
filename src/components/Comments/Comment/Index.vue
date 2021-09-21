@@ -1,5 +1,5 @@
 <template>
-  <div class="my-5">
+  <div class="my-5 border-2 bg-gray-200 p-3  rounded-lg hover:shadow transition cursor-pointer">
     <div
       @click="postHolderProfile"
       class="flex items-center cursor-pointer hover:text-blue-400 transition"

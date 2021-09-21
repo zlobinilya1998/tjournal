@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex bg-gray-100 py-5">
+  <div class="px-6 flex-1 flex bg-gray-100 py-5">
     <LeftSidebar />
     <router-view />
   </div>

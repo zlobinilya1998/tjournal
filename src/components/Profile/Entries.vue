@@ -1,7 +1,14 @@
 <template>
   <div class="flex space-x-6 items-start">
-    <div class="w-2/3 rounded-lg flex justify-center items-center">
-      <div v-if="posts" class="space-y-4 w-full">
+    <div class="w-2/3 rounded-lg flex justify-center items-center relative">
+      <v-icon
+        v-if="loading"
+        class="absolute inset-1/2 top-24 text-yellow-500"
+        name="fa-spinner"
+        :scale="1.5"
+        animation="spin"
+      />
+      <div v-else-if="posts" class="space-y-4 w-full">
         <Post v-for="post in posts" :key="post._id" :post="post" />
       </div>
       <p v-else>Здесь еще нет публикаций</p>
@@ -49,6 +56,7 @@ export default {
   name: "Entries",
   data: () => ({
     posts: null,
+    loading: false,
   }),
   components: {
     Post: () => import("@/components/Posts/Post/Index"),
@@ -72,9 +80,14 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get("post/user/" + this.$route.params.id).then((res) => {
-      this.posts = res.data;
-    });
+    this.loading = true;
+    setTimeout(() => {
+      this.$axios.get("post/user/" + this.$route.params.id).then((res) => {
+        this.posts = res.data;
+      }).finally(()=>{
+        this.loading = false;
+      });
+    }, 500);
   },
 };
 </script>

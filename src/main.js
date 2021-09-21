@@ -9,12 +9,15 @@ import {
   axios,
   OhVueIcon,
   Vuelidate,
+  VueToast,
   vSelect,
 } from "./plugins/index";
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 Vue.use(Vuelidate);
+Vue.use(VueToast);
+
 const axiosConfig = {
   baseURL: "http://localhost:3000/api/",
   timeout: 30000,

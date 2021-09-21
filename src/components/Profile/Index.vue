@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-auto md:w-5/6 lg:w-2/3 xl:w-1/2" :key="profileUser._id">
-    <div class="bg-white p-5 pb-0 rounded-lg" v-if="profileUser">
+  <div v-if="profileUser" class="mx-auto md:w-5/6 lg:w-2/3 xl:w-1/2" :key="profileUser._id">
+    <div class="bg-white p-5 pb-0 rounded-lg" >
       <div class="flex items-start justify-between">
         <div
           class="mr-2 bg-cover rounded-lg w-28 h-28"
@@ -222,7 +222,6 @@ export default {
     },
   },
   mounted() {
-    console.log('mounted')
     this.$axios
       .get(`user/${this.$route.params.id}`)
       .then((res) => (this.profileUser = res.data));
@@ -230,7 +229,7 @@ export default {
   watch: {
     $route(to) {
       this.$axios
-        .get(`user/profile/${to.params.id}`)
+        .get(`user/${to.params.id}`)
         .then((res) => (this.profileUser = res.data));
     },
   },

@@ -1,13 +1,25 @@
 <template>
   <div class="flex space-x-6 items-start">
-    <div class="w-2/3 rounded-lg flex justify-center items-center">
-      <div v-if="comments.length > 0" class="w-full">
+    <div class="w-2/3 rounded-lg flex justify-center items-center relative">
+      <v-icon
+        v-if="loading"
+        class="absolute inset-1/2 top-24 text-yellow-500"
+        name="fa-spinner"
+        :scale="1.5"
+        animation="spin"
+      />
+      <div v-else-if="comments.length > 0" class="w-full">
         <div
           v-for="comment in comments"
           :key="comment._id"
           class="p-5 bg-white rounded-lg mb-8"
         >
-          <p class="font-bold text-sm">{{ comment.post.title }}</p>
+          <p
+            class="font-bold text-xl cursor-pointer"
+            @click="postPage(comment.post._id)"
+          >
+            {{ comment.post.title }}
+          </p>
           <div
             @click="postHolderProfile"
             class="
@@ -54,6 +66,7 @@ import { mapGetters } from "vuex";
 export default {
   data: () => ({
     comments: [],
+    loading: false,
   }),
   computed: {
     ...mapGetters(["webRoutes"]),
@@ -72,18 +85,34 @@ export default {
         name: `entries`,
       });
     },
+    postPage(id) {
+      this.$router.push({
+        name: "post",
+        params: {
+          id,
+        },
+      });
+    },
   },
   watch: {
     $route(to) {
-      this.$axios.get("comments/user/" + to.params.id).then((res) => {
+      this.$axios.get("comment/user/" + to.params.id).then((res) => {
         this.comments = res.data;
       });
     },
   },
   mounted() {
-    this.$axios.get("comments/user/" + this.$route.params.id).then((res) => {
-      this.comments = res.data;
-    });
+    this.loading = true;
+    setTimeout(() => {
+      this.$axios
+        .get("comment/user/" + this.$route.params.id)
+        .then((res) => {
+          this.comments = res.data;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }, 500);
   },
 };
 </script>

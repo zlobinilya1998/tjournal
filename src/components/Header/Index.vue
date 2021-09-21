@@ -59,7 +59,7 @@
           ></path>
         </svg>
         <input
-          class="outline-none bg-transparent w-56"
+          class="outline-none bg-transparent w-24 md:w-56"
           type="text"
           placeholder="Поиск"
           v-model="search"
@@ -103,7 +103,7 @@
         Новая запись
       </button>
     </div>
-    <div v-if="user" class="flex items-center">
+    <div v-if="user" class="hidden md:flex items-center">
       <svg
         class="mr-4 hover:text-yellow-500 fill-current cursor-pointer"
         height="20"

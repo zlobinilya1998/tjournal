@@ -28,7 +28,9 @@ export default {
         sessionStorage.getItem("Authorization");
       this.$axios
         .post("auth")
-        .then((res) => this.setUser(res.data))
+        .then((res) => {
+          this.setUser(res.data);
+        })
         .catch((e) => console.log(e));
     }
   },

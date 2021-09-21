@@ -542,7 +542,7 @@ export default {
     login: {
       viaEmail: {
         email: "qwertin1998@gmail.com",
-        password: "123456",
+        password: "qwertin1998",
       },
     },
     registration: {
@@ -550,7 +550,7 @@ export default {
         name: "Илья",
         secondName: "Злобин",
         email: "qwertin1998@gmail.com",
-        password: "123456",
+        password: "qwertin1998",
       },
     },
   }),

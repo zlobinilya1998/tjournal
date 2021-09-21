@@ -42,11 +42,16 @@
         </svg>
       </div>
       <div class="p-5 flex space-x-4 items-center">
-        <div class="flex items-center space-x-2">
-          <v-select v-if="options.categories" @input="changeCategory" label="name" :options="options.categories">
-            <template #header><span class="text-sm">Выберите категорию</span> </template>
-          </v-select>
-        </div>
+        <select
+          v-if="options.categories"
+          v-model="newPostForm.category"
+          @input="changeCategory"
+          class="outline-none border-2 border-blue-300 bg-red-200 p-"
+        >
+          <option v-for="option in options.categories" :key="option._id">
+            {{ option.name }}
+          </option>
+        </select>
         <Toolbar
           @createTitle="createTitle"
           @createParagraph="createParagraph"
@@ -153,11 +158,11 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["toggleCreatePostModal"]),
-    changeCategory(e){
-      if (e === null){
-        this.newPostForm.icon = '';
-        this.newPostForm.category = '';
+    ...mapMutations(["toggleCreatePostModal","setNewPostsCount"]),
+    changeCategory(e) {
+      if (e === null) {
+        this.newPostForm.icon = "";
+        this.newPostForm.category = "";
         return;
       }
       this.newPostForm.icon = e.icon;
@@ -218,6 +223,11 @@ export default {
           })
           .then(() => {
             this.closeModal(null, true);
+            this.setNewPostsCount(1);
+            this.$toast.open("Пост успешно создан!");
+          })
+          .catch(() => {
+            this.$toast.error("Что-то пошло не так!");
           })
           .finally(() => {
             this.loading = false;
@@ -241,6 +251,11 @@ export default {
       handler(value) {
         if (value.img) {
           this.$refs.preview.src = `${this.webRoutes.img}${value.img}`;
+        }
+        if (value.category) {
+          this.newPostForm.icon = this.options.categories.find(
+            (item) => item.name === value.category
+          ).icon;
         }
       },
       deep: true,

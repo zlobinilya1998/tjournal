@@ -95,6 +95,7 @@
               justify-center
               items-center
               cursor-pointer
+              mb-10
             "
           >
             <p class="mr-3">Кол-во новых постов</p>
@@ -106,12 +107,15 @@
             />
             <span v-else>{{ newPostsCount }}</span>
           </div>
-          <Post
-            v-for="post in posts"
-            :key="post._id"
-            :post="post"
-            @updated="updatePost"
-          />
+          <transition-group @before-enter="beforeEnter" @enter="enter">
+            <Post
+              v-for="(post,index) in posts"
+              :key="post._id"
+              :post="post"
+              :data-index="index"
+              @updated="updatePost"
+            />
+          </transition-group>
         </div>
         <div v-else class="text-center mt-10 font-bold">Постов пока нет...</div>
       </div>
@@ -162,6 +166,18 @@ export default {
       "toggleRegistrationModal",
       "setNewPostsCount",
     ]),
+    beforeEnter: function (el) {
+      console.log(el)
+      el.style.opacity = '0'
+      el.style.transform = "translateY(-10px)";
+    },
+    enter: function (el) {
+      const delay = el.dataset.index * 75;
+      setTimeout(() => {
+        el.style.opacity = '1'
+        el.style.transform = "";
+      }, delay);
+    },
     fetchPosts() {
       this.loading = true;
       setTimeout(() => {

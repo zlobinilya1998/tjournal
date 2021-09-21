@@ -10,7 +10,7 @@
         id="v_chevron_right"
         :style="{ transform: show ? 'rotate(90deg)' : '' }"
         class="transition"
-        :class="{'text-blue-400': show}"
+        :class="{ 'text-blue-400': show }"
       >
         <path
           class="fill-current"
@@ -23,11 +23,14 @@
     </div>
     <transition-group name="fade">
       <div key="first" class="mt-5" v-if="show && comments.length">
-        <Comment
-          v-for="comment in comments"
-          :comment="comment"
-          :key="comment._id"
-        />
+        <transition-group @before-enter="beforeEnter" @enter="enter">
+          <Comment
+            v-for="(comment, index) in comments"
+            :comment="comment"
+            :key="comment._id"
+            :data-index="index"
+          />
+        </transition-group>
       </div>
       <div
         key="second"
@@ -47,6 +50,21 @@ export default {
     show: true,
     loading: true,
   }),
+  methods: {
+    beforeEnter: function (el) {
+      el.style.opacity = 0;
+      el.style.height = 0;
+      el.style.transform = "translateX(-10px)";
+    },
+    enter: function (el) {
+      const delay = el.dataset.index * 75;
+      setTimeout(() => {
+        el.style.opacity = 1;
+        el.style.height = "";
+        el.style.transform = "";
+      }, delay);
+    },
+  },
   mounted() {
     setTimeout(() => {
       this.$axios

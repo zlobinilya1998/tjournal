@@ -87,30 +87,20 @@
             </svg>
           </span>
           <span class="flex space-x-3">
-            <svg
-              @click="dislike"
-              class="opacity-75 cursor-pointer"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              id="v_arrow_down"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M20.831 7.067a1.25 1.25 0 00-1.764.103l-7.029 7.907a.046.046 0 01-.016.013.054.054 0 01-.021.004.054.054 0 01-.021-.004.046.046 0 01-.017-.013l-.921.82.921-.82L4.935 7.17a1.25 1.25 0 10-1.868 1.661l7.028 7.907a2.55 2.55 0 003.812 0l7.028-7.907a1.25 1.25 0 00-.104-1.764z"
-              ></path>
-            </svg>
             <p>{{ post.likes.length }}</p>
             <svg
               @click="like"
-              class="opacity-75 cursor-pointer"
+              class="opacity-75 cursor-pointer fill-current"
               width="24"
               height="24"
               viewBox="0 0 24 24"
               id="v_arrow_up"
+              :class="{
+                'text-green-500': isPostLiked,
+              }"
             >
               <path
+                class="transition"
                 fill-rule="evenodd"
                 clip-rule="evenodd"
                 d="M3.17 16.934a1.25 1.25 0 001.764-.104l7.029-7.907a.046.046 0 01.016-.012.053.053 0 01.021-.004c.009 0 .016.002.021.004a.03.03 0 01.016.012l7.029 7.907a1.25 1.25 0 001.868-1.66l-7.028-7.907a2.55 2.55 0 00-3.812 0l-7.028 7.906a1.25 1.25 0 00.104 1.765z"
@@ -230,6 +220,10 @@ export default {
     userName() {
       return this.post.user.name + " " + this.post.user.secondName;
     },
+    isPostLiked() {
+      if (!this.user) return;
+      return this.post.likes.some((item) => item._id === this.user._id);
+    },
   },
   methods: {
     commentDate(date) {
@@ -243,13 +237,14 @@ export default {
       );
     },
     like() {
-      this.$axios.put("posts/like", { _id: this.post._id }).then((res) => {
-        this.$emit("updated", res.data);
+      if (this.post.likes.some((item) => item._id === this.user._id)) return;
+      this.$axios.patch("post/like", { id: this.post._id }).then((res) => {
+        this.post = res.data;
       });
     },
     dislike() {
       this.$axios.put("posts/dislike", { _id: this.post._id }).then((res) => {
-        this.$emit("updated", res.data);
+        this.post = res.data;
       });
     },
     createComment() {

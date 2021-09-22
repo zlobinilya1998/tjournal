@@ -167,7 +167,6 @@ export default {
       "setNewPostsCount",
     ]),
     beforeEnter: function (el) {
-      console.log(el)
       el.style.opacity = '0'
       el.style.transform = "translateY(-10px)";
     },

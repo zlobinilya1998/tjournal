@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center cursor-pointer" @click="show = !show">
+    <div class="inline-flex items-center cursor-pointer" @click="show = !show">
       <h3 class="font-medium">Комментарии</h3>
       <svg
         width="18"

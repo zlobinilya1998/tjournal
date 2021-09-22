@@ -10,6 +10,7 @@ import {
   OhVueIcon,
   Vuelidate,
   VueToast,
+  ClickOutside,
   vSelect,
 } from "./plugins/index";
 
@@ -17,6 +18,8 @@ Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 Vue.use(Vuelidate);
 Vue.use(VueToast);
+
+Vue.directive("click-outside", ClickOutside);
 
 const axiosConfig = {
   baseURL: "http://localhost:3000/api/",

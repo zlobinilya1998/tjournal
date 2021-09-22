@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div v-if="leftSideBar.show" class="w-1/6">Sidebar</div>
+    <div v-if="leftSideBar.show" class="self-start w-1/6">Sidebar</div>
   </transition>
 </template>
 

@@ -137,11 +137,11 @@
         </div>
         <svg
           @click="addInFavorite"
-          class="opacity-75 cursor-pointer"
+          class="opacity-75 cursor-pointer fill-current transition"
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          id="v_favorite"
+          :class="{'text-green-500':postInMyFavorite}"
         >
           <path
             fill-rule="evenodd"
@@ -206,6 +206,10 @@ export default {
       if (!this.user) return;
       return this.post.user._id === this.user._id;
     },
+    postInMyFavorite() {
+      if (!this.user) return;
+      return this.user.favorite.some(item=>item._id === this.post._id)
+    },
     subscribedOnPostCreator() {
       if (!this.user) return;
       return this.user.subscriptions.some(
@@ -226,11 +230,7 @@ export default {
       });
     },
     addInFavorite() {
-      if (this.user.favorites.some(item => item._id === this.post._id)){
-        this.$axios.post("favorite/remove",{post:this.post}).then(({data}) => this.setUser(data));
-      } else {
-        this.$axios.post("favorite/add",{post:this.post}).then(({data}) => this.setUser(data));
-      }
+        this.$axios.post("favorite",{post:this.post}).then(({data}) => this.setUser(data));
     },
     createRepost() {
       this.$axios

@@ -1,6 +1,6 @@
 <template>
   <div class="flex relative">
-    <span @click="toggleShow" :class="{'text-blue-600': show}">
+    <span @click="toggleShow" :class="{ 'text-blue-600': show }">
       <v-icon
         name="fa-plus"
         class="cursor-pointer transition"
@@ -9,7 +9,11 @@
       />
     </span>
     <transition name="slide">
-      <div v-if="show" class="bg-white w-48 ring-1 ring-gray-100 shadow absolute left-8">
+      <div
+        v-if="show"
+        v-click-outside="hide"
+        class="bg-white w-48 ring-1 ring-gray-100 shadow absolute left-8"
+      >
         <div
           @click="emitAndClose(tool.emit)"
           v-for="(tool, index) in tools"
@@ -17,8 +21,7 @@
           class="
             p-2
             space-x-2
-            hover:bg-gray-50
-            hover:text-blue-600
+            hover:bg-gray-50 hover:text-blue-600
             cursor-pointer
             flex
             items-center
@@ -38,30 +41,42 @@ export default {
   data: () => ({
     tools: [
       { icon: "fa-align-justify", text: "Текст", emit: "createParagraph" },
-      { icon: "fa-heading", text: "Заголовок",emit: "createTitle" },
-      { icon: "fa-image", text: "Выбрать фон поста",emit: "createPostBackground" },
-      { icon: "fa-link", text: "Вставить фотографию",emit: "createImg" },
+      { icon: "fa-heading", text: "Заголовок", emit: "createTitle" },
+      {
+        icon: "fa-image",
+        text: "Выбрать фон поста",
+        emit: "createPostBackground",
+      },
+      { icon: "fa-link", text: "Вставить фотографию", emit: "createImg" },
     ],
     show: false,
   }),
   methods: {
-      emitAndClose(value){
-          this.$emit(value);
-          this.toggleShow();
-      },
+    emitAndClose(value) {
+      this.$emit(value);
+      this.toggleShow();
+    },
     toggleShow() {
       this.show = !this.show;
     },
+    hide() {
+      console.log('hide')
+      this.show = false;
+    }
+  },
+  mounted() {
+    this.popupItem = this.$el;
   },
 };
 </script>
 
 <style scoped>
-  .slide-enter-active, .slide-leave-active {
-    transition: all .5s;
-  }
-  .slide-enter, .slide-leave-to /* .slide-leave-active до версии 2.1.8 */ {
-    opacity: 0;
-    left: 0;
-  }
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s;
+}
+.slide-enter, .slide-leave-to /* .slide-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+  left: 0;
+}
 </style>

@@ -12,10 +12,9 @@
             absolute
             top-0
             bg-blue-500
-            hover:bg-blue-700
+            hover:bg-blue-600
             transition
-            p-1
-            px-2
+            p-2
             m-3
             rounded-lg
             text-white
@@ -41,22 +40,12 @@
           ></path>
         </svg>
       </div>
-      <div class="p-5 flex space-x-4 items-center">
-        <!--        <select-->
-        <!--          v-if="options.categories"-->
-        <!--          v-model="newPostForm.category"-->
-        <!--          @input="changeCategory"-->
-        <!--          class="outline-none border-2 border-blue-300 bg-red-200 p-"-->
-        <!--        >-->
-        <!--          <option v-for="option in options.categories" :key="option._id">-->
-        <!--            {{ option.name }}-->
-        <!--          </option>-->
-        <!--        </select>-->
+      <div class="p-5 pr-10 flex items-center">
         <div class="dropdown">
           <button
             @click="toggleDropDown"
             :class="{ 'text-blue-600': options.show }"
-            class="hover:text-blue-600 transition font-medium"
+            class="hover:text-blue-600 transition font-medium mr-3"
             ref="category"
           >
             Категория
@@ -105,12 +94,12 @@
           @click="showPreview = true"
           class="
             bg-blue-500
-            hover:bg-blue-700
+            hover:bg-blue-600
             transition
-            p-1
-            px-2
+            p-2
             rounded-lg
             text-white
+            ml-auto
           "
         >
           Превью картинки

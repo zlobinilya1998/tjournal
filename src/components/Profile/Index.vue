@@ -1,15 +1,32 @@
 <template>
-  <div v-if="profileUser" class="mx-auto md:w-5/6 lg:w-2/3 xl:w-1/2" :key="profileUser._id">
-    <div class="bg-white p-5 pb-0 rounded-lg" >
-      <div class="flex items-start justify-between">
-        <div
-          class="mr-2 bg-cover rounded-lg w-28 h-28"
-          :style="{
-            backgroundImage: `url(${this.userAvatar})`,
-          }"
+  <div
+    v-if="profileUser"
+    class="mx-auto md:w-5/6 lg:w-2/3 xl:w-1/2"
+    :key="profileUser._id"
+  >
+    <div class="bg-white p-5 pb-0 rounded-lg">
+      <div class="flex items-start justify-between relative">
+        <img
+          @click="$refs.selectAvatar.click()"
+          :src="userAvatar"
+          width="120"
+          class="mr-2 rounded-full cursor-pointer"
+          alt="avatar"
         />
-        <button v-if="isMyProfile" class="p-2 bg-white shadow">
-          <svg width="24" height="24" viewBox="0 0 24 24" id="v_gear">
+        <input type="file" ref="selectAvatar" class="hidden" />
+        <button
+          v-if="isMyProfile"
+          @click="toggleDropDown"
+          class="p-2 bg-white shadow hover:text-yellow-500"
+          :class="{ 'text-yellow-500': showDropDown }"
+        >
+          <svg
+            class="fill-current transition duration-300"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            id="v_gear"
+          >
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
@@ -114,6 +131,33 @@
             <span class="w-full text-center px-5">Написать</span>
           </button>
         </div>
+        <div class="dropdown absolute right-24 top-12">
+          <transition name="fade">
+            <div
+              ref="dropdown"
+              class="ring-1 ring-gray-100 absolute mt-2 bg-white"
+              v-if="showDropDown"
+            >
+              <button
+                @click="logout"
+                class="
+                  hover:text-yellow-500
+                  flex
+                  items-center
+                  p-2
+                  transition
+                  w-full
+                  hover:bg-gray-50
+                  text-sm
+                  px-4
+                "
+              >
+                <v-icon name="fa-sign-out-alt" class="mr-2" />
+                <p>Выход</p>
+              </button>
+            </div>
+          </transition>
+        </div>
       </div>
       <h2 class="text-3xl font-medium mt-5">
         {{ profileUser.name + " " + profileUser.secondName }}
@@ -154,6 +198,7 @@ export default {
   data: () => ({
     profileUser: null,
     loading: false,
+    showDropDown: false,
   }),
   computed: {
     ...mapGetters(["user", "webRoutes"]),
@@ -182,6 +227,15 @@ export default {
   },
   methods: {
     ...mapMutations(["setUser", "toggleRegistrationModal"]),
+    logout() {
+      sessionStorage.removeItem("Authorization");
+      this.setUser(null);
+      this.showDropDown = false;
+      this.$toast.open("Выход из системы...")
+    },
+    toggleDropDown() {
+      this.showDropDown = !this.showDropDown;
+    },
     subscribeOnUser() {
       if (!this.user) {
         this.toggleRegistrationModal({ show: true });

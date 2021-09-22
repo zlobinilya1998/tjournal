@@ -13,13 +13,13 @@
         </div>
         <svg
           v-if="postCreatedByMySelf"
-          class="hover:text-gray-900 fill-current cursor-pointer"
+          class="hover:text-green-600 cursor-pointer transition"
           width="18"
           height="24"
           viewBox="0 0 18 4"
-          id="ui_etc"
         >
           <path
+            class="fill-current transition"
             d="M2 4a2 2 0 110-4 2 2 0 010 4zm7 0a2 2 0 110-4 2 2 0 010 4zm7 0a2 2 0 110-4 2 2 0 010 4z"
           ></path>
         </svg>
@@ -141,7 +141,7 @@
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          :class="{'text-green-500':postInMyFavorite}"
+          :class="{ 'text-green-500': postInMyFavorite }"
         >
           <path
             fill-rule="evenodd"
@@ -208,7 +208,7 @@ export default {
     },
     postInMyFavorite() {
       if (!this.user) return;
-      return this.user.favorite.some(item=>item._id === this.post._id)
+      return this.user.favorite.some((item) => item._id === this.post._id);
     },
     subscribedOnPostCreator() {
       if (!this.user) return;
@@ -230,7 +230,9 @@ export default {
       });
     },
     addInFavorite() {
-        this.$axios.post("favorite",{post:this.post}).then(({data}) => this.setUser(data));
+      this.$axios
+        .post("favorite", { post: this.post })
+        .then(({ data }) => this.setUser(data));
     },
     createRepost() {
       this.$axios

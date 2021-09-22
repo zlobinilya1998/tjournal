@@ -53,6 +53,7 @@ export default {
   }),
   methods: {
     emitAndClose(value) {
+      if (!this.show) return;
       this.$emit(value);
       this.toggleShow();
     },
@@ -60,7 +61,6 @@ export default {
       this.show = !this.show;
     },
     hide() {
-      console.log('hide')
       this.show = false;
     }
   },

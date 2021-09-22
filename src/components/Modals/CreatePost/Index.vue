@@ -42,16 +42,55 @@
         </svg>
       </div>
       <div class="p-5 flex space-x-4 items-center">
-        <select
-          v-if="options.categories"
-          v-model="newPostForm.category"
-          @input="changeCategory"
-          class="outline-none border-2 border-blue-300 bg-red-200 p-"
-        >
-          <option v-for="option in options.categories" :key="option._id">
-            {{ option.name }}
-          </option>
-        </select>
+        <!--        <select-->
+        <!--          v-if="options.categories"-->
+        <!--          v-model="newPostForm.category"-->
+        <!--          @input="changeCategory"-->
+        <!--          class="outline-none border-2 border-blue-300 bg-red-200 p-"-->
+        <!--        >-->
+        <!--          <option v-for="option in options.categories" :key="option._id">-->
+        <!--            {{ option.name }}-->
+        <!--          </option>-->
+        <!--        </select>-->
+        <div class="dropdown">
+          <button
+            @click="toggleDropDown"
+            :class="{ 'text-blue-600': options.show }"
+            class="hover:text-blue-600 transition font-medium"
+            ref="category"
+          >
+            Категория
+          </button>
+          <transition name="fade">
+            <div
+              ref="dropdown"
+              class="ring-1 ring-gray-100 absolute mt-2 bg-white"
+              v-if="options.show"
+            >
+              <transition-group>
+                <button
+                  @click="selectCategory(option.name)"
+                  class="
+                    hover:text-blue-600
+                    flex
+                    p-2
+                    transition
+                    w-full
+                    hover:bg-gray-50
+                    text-xs
+                    px-4
+                  "
+                  :class="{'text-blue-600 bg-gray-50': newPostForm.category === option.name}"
+                  v-for="option in options.categories"
+                  :key="option._id"
+                >
+                  <v-icon :name="option.icon" class="mr-2" />
+                  <p>{{ option.name }}</p>
+                </button>
+              </transition-group>
+            </div>
+          </transition>
+        </div>
         <Toolbar
           @createTitle="createTitle"
           @createParagraph="createParagraph"
@@ -139,6 +178,7 @@ export default {
     },
     options: {
       categories: null,
+      show: false,
     },
   }),
   validations: {
@@ -158,7 +198,16 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["toggleCreatePostModal","setNewPostsCount"]),
+    ...mapMutations(["toggleCreatePostModal", "setNewPostsCount"]),
+    toggleDropDown() {
+      this.options.show = !this.options.show;
+    },
+    hideDropDown() {
+      this.options.show = false;
+    },
+    selectCategory(category) {
+      this.newPostForm.category = category;
+    },
     changeCategory(e) {
       if (e === null) {
         this.newPostForm.icon = "";
@@ -253,6 +302,7 @@ export default {
           this.$refs.preview.src = `${this.webRoutes.img}${value.img}`;
         }
         if (value.category) {
+            this.$refs.category.innerHTML = value.category
           this.newPostForm.icon = this.options.categories.find(
             (item) => item.name === value.category
           ).icon;
@@ -296,5 +346,16 @@ export default {
 }
 .editor::-webkit-scrollbar {
   width: 0;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  margin-top: 10px;
+  z-index: 1;
 }
 </style>

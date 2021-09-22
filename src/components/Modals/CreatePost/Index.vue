@@ -80,7 +80,10 @@
                     text-xs
                     px-4
                   "
-                  :class="{'text-blue-600 bg-gray-50': newPostForm.category === option.name}"
+                  :class="{
+                    'text-blue-600 bg-gray-50':
+                      newPostForm.category === option.name,
+                  }"
                   v-for="option in options.categories"
                   :key="option._id"
                 >
@@ -302,10 +305,11 @@ export default {
           this.$refs.preview.src = `${this.webRoutes.img}${value.img}`;
         }
         if (value.category) {
-            this.$refs.category.innerHTML = value.category
+          this.$refs.category.innerHTML = value.category;
           this.newPostForm.icon = this.options.categories.find(
             (item) => item.name === value.category
           ).icon;
+          this.options.show = false;
         }
       },
       deep: true,

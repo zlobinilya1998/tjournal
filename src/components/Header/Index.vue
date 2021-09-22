@@ -3,20 +3,9 @@
     class="fixed top-0 w-full z-10 bg-yellow-100 h-14 px-6 flex justify-between"
   >
     <div class="flex items-center">
-      <svg
-        @click="toggleLeftSidebar"
-        class="mr-4"
-        viewBox="0 0 24 24"
-        height="24"
-        width="24"
-        id="ui_burger"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M2 6a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1zm0 6a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1zm0 6a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1z"
-          clip-rule="evenodd"
-        ></path>
-      </svg>
+      <div @click="toggleLeftSidebar" class="inline-block cursor-pointer mr-5 p-3 rounded-lg hover:bg-white transition" :class="{'bg-white': leftSideBar.show}">
+        <div v-for="(item,index) in 3" :key="index" class="w-6 h-1 bg-black transition" :class="{'mt-1': index !== 0}"/>
+      </div>
       <router-link :to="{ name: 'home' }">
         <svg
           class="mr-4"
@@ -208,7 +197,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["user", "webRoutes"]),
+    ...mapGetters(["user", "webRoutes","leftSideBar"]),
     userAvatar() {
       return this.webRoutes.userAvatar + this.user.avatar;
     },

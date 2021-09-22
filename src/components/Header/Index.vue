@@ -4,7 +4,7 @@
   >
     <div class="flex items-center">
       <div @click="toggleLeftSidebar" class="inline-block cursor-pointer mr-5 p-3 rounded-lg hover:bg-white transition" :class="{'bg-white': leftSideBar.show}">
-        <div v-for="(item,index) in 3" :key="index" class="w-6 h-1 bg-black transition" :class="{'mt-1': index !== 0}"/>
+        <div v-for="(item,index) in 3" :key="index" class="w-6 h-1 bg-yellow-500 transition" :class="{'mt-1': index !== 0}"/>
       </div>
       <router-link :to="{ name: 'home' }">
         <svg

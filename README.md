@@ -21,7 +21,9 @@ git submodule foreach npm install
 ```
 npm run serve
 ```
-#### Server 
+#### Server
+
+#### Project have two servers(nest and express), consequently u need to run both servers
 ```
 npm run server
 ```

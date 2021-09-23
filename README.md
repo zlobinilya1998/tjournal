@@ -1,4 +1,4 @@
-<img src="logo.png" width="35" align="right" />
+<img src="logo.png" width="100" align="right" />
 
 
 # Tjournal

@@ -8,10 +8,12 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
+import { io } from "socket.io-client";
 
 export default {
   computed: {
+    ...mapGetters(['newPostsCount']),
     currentLayout: () => {
       return () => import("@/Layouts/MainLayout.vue");
     },
@@ -20,19 +22,27 @@ export default {
     Modals: () => import("@/components/Modals/Index"),
   },
   methods: {
-    ...mapMutations(["setUser"]),
-  },
-  beforeMount() {
-    if (sessionStorage.getItem("Authorization")) {
-      this.$axios.defaults.headers.common["Authorization"] =
-        sessionStorage.getItem("Authorization");
+    ...mapMutations(["setUser", "setSocket","incrementNewPostsCount"]),
+    auth() {
       this.$axios
         .post("auth")
         .then((res) => {
           this.setUser(res.data);
         })
         .catch((e) => console.log(e));
+    },
+  },
+  beforeMount() {
+    if (sessionStorage.getItem("Authorization")) {
+      this.$axios.defaults.headers.common["Authorization"] =
+        sessionStorage.getItem("Authorization");
     }
+    this.auth();
+    const connection = io("http://localhost:8081");
+    connection.on('new-post',()=>{
+      this.incrementNewPostsCount(1)
+    })
+    this.setSocket(connection);
   },
 };
 </script>

@@ -164,26 +164,8 @@
         </svg>
       </span>
       <span class="flex space-x-3 items-center">
-        <p>{{ post.likes.length }}</p>
-        <svg
-          @click="like"
-          class="opacity-75 cursor-pointer fill-current transition"
-          :class="{
-            'text-green-500': isPostLiked,
-          }"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          id="v_arrow_up"
-          ref="like"
-        >
-          <path
-            class="transition"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M3.17 16.934a1.25 1.25 0 001.764-.104l7.029-7.907a.046.046 0 01.016-.012.053.053 0 01.021-.004c.009 0 .016.002.021.004a.03.03 0 01.016.012l7.029 7.907a1.25 1.25 0 001.868-1.66l-7.028-7.907a2.55 2.55 0 00-3.812 0l-7.028 7.906a1.25 1.25 0 00.104 1.765z"
-          ></path>
-        </svg>
+        <v-icon name="fa-eye" scale="1.3" class="fill-current text-gray-500"/>
+        <p>{{post.views}}</p>
       </span>
     </div>
   </div>
@@ -223,12 +205,6 @@ export default {
   },
   methods: {
     ...mapMutations(["setUser", "toggleRegistrationModal"]),
-    like() {
-      if (this.post.likes.some((item) => item._id === this.user._id)) return;
-      this.$axios.patch("post/like", { id: this.post._id }).then((res) => {
-        this.$emit("updated", res.data);
-      });
-    },
     addInFavorite() {
       this.$axios
         .post("favorite", { post: this.post })
@@ -288,11 +264,6 @@ export default {
             this.loading = false;
           });
       }, 600);
-    },
-  },
-  watch: {
-    post(newVal, oldVal) {
-      console.log(oldVal, "post changed", newVal);
     },
   },
 };

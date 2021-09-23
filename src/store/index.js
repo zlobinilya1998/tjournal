@@ -27,10 +27,14 @@ export default new Vuex.Store({
       img: "http://localhost:3000/",
     },
     newPostsCount: 0,
+    socket: null,
   },
   mutations: {
+    setSocket: (state, payload) => (state.socket = payload),
     setUser: (state, payload) => (state.user = payload),
     setNewPostsCount: (state, payload) => (state.newPostsCount = payload),
+    incrementNewPostsCount: (state, payload) =>
+      (state.newPostsCount += payload),
     toggleConfigureNewsModal: (state, payload) =>
       (state.modals.configureNews = payload),
     toggleRegistrationModal: (state, payload) =>
@@ -46,6 +50,7 @@ export default new Vuex.Store({
     leftSideBar: (state) => state.menu.leftSidebar,
     modals: (state) => state.modals,
     webRoutes: (state) => state.webRoutes,
+    socket: (state) => state.socket,
   },
   actions: {},
   modules: {},

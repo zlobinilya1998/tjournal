@@ -109,7 +109,7 @@
           </div>
           <transition-group @before-enter="beforeEnter" @enter="enter">
             <Post
-              v-for="(post,index) in posts"
+              v-for="(post, index) in posts"
               :key="post._id"
               :post="post"
               :data-index="index"
@@ -138,7 +138,7 @@ export default {
     Comments: () => import("@/components/Comments/Index"),
   },
   computed: {
-    ...mapGetters(["user", "newPostsCount"]),
+    ...mapGetters(["user", "newPostsCount", "socket"]),
     today: () =>
       new Date()
         .toLocaleDateString("ru-Ru", {
@@ -167,13 +167,13 @@ export default {
       "setNewPostsCount",
     ]),
     beforeEnter: function (el) {
-      el.style.opacity = '0'
+      el.style.opacity = "0";
       el.style.transform = "translateY(-10px)";
     },
     enter: function (el) {
       const delay = el.dataset.index * 75;
       setTimeout(() => {
-        el.style.opacity = '1'
+        el.style.opacity = "1";
         el.style.transform = "";
       }, delay);
     },

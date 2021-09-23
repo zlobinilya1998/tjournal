@@ -152,8 +152,8 @@
                   px-4
                 "
               >
-                <v-icon name="fa-sign-out-alt" class="mr-2" />
-                <p>Выход</p>
+                <p class="mr-2">Выход</p>
+                <v-icon name="fa-sign-out-alt"/>
               </button>
             </div>
           </transition>

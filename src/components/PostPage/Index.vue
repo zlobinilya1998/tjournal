@@ -86,26 +86,13 @@
               ></path>
             </svg>
           </span>
-          <span class="flex space-x-3">
-            <p>{{ post.likes.length }}</p>
-            <svg
-              @click="like"
-              class="opacity-75 cursor-pointer fill-current"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              id="v_arrow_up"
-              :class="{
-                'text-green-500': isPostLiked,
-              }"
-            >
-              <path
-                class="transition"
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M3.17 16.934a1.25 1.25 0 001.764-.104l7.029-7.907a.046.046 0 01.016-.012.053.053 0 01.021-.004c.009 0 .016.002.021.004a.03.03 0 01.016.012l7.029 7.907a1.25 1.25 0 001.868-1.66l-7.028-7.907a2.55 2.55 0 00-3.812 0l-7.028 7.906a1.25 1.25 0 00.104 1.765z"
-              ></path>
-            </svg>
+          <span class="flex space-x-3 items-center">
+            <v-icon
+              name="fa-eye"
+              scale="1.3"
+              class="fill-current text-gray-500"
+            />
+            <p>{{ post.views }}</p>
           </span>
         </div>
       </div>
@@ -220,10 +207,6 @@ export default {
     userName() {
       return this.post.user.name + " " + this.post.user.secondName;
     },
-    isPostLiked() {
-      if (!this.user) return;
-      return this.post.likes.some((item) => item._id === this.user._id);
-    },
   },
   methods: {
     commentDate(date) {
@@ -235,17 +218,6 @@ export default {
           minute: "numeric",
         })
       );
-    },
-    like() {
-      if (this.post.likes.some((item) => item._id === this.user._id)) return;
-      this.$axios.patch("post/like", { id: this.post._id }).then((res) => {
-        this.post = res.data;
-      });
-    },
-    dislike() {
-      this.$axios.put("posts/dislike", { _id: this.post._id }).then((res) => {
-        this.post = res.data;
-      });
     },
     createComment() {
       this.loading = true;
@@ -289,7 +261,19 @@ export default {
   mounted() {
     this.$axios
       .get(`post/${this.$route.params.id}`)
-      .then((res) => (this.post = res.data));
+      .then((res) => {
+        this.post = res.data;
+      })
+      .then(() => {
+        this.$axios
+          .patch("post", { id: this.post._id })
+          .then((res) => {
+            this.post.views = res.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      });
   },
 };
 </script>

@@ -190,7 +190,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["toggleCreatePostModal", "setNewPostsCount"]),
+    ...mapMutations(["toggleCreatePostModal"]),
     toggleDropDown() {
       this.options.show = !this.options.show;
     },
@@ -242,8 +242,12 @@ export default {
     async uploadPostBackground() {
       const formData = new FormData();
       formData.append("file", this.$refs.file.files[0]);
-      const { data } = await this.$axios.post("files", formData);
-      this.newPostForm.img = data;
+      try {
+        const { data } = await this.$axios.post("files", formData);
+        this.newPostForm.img = data;
+      } catch (e) {
+        this.$toast.error('Произошла ошибка при записи файла')
+      }
     },
     async uploadImage() {
       const formData = new FormData();
@@ -264,7 +268,7 @@ export default {
           })
           .then(() => {
             this.closeModal(null, true);
-            this.setNewPostsCount(1);
+            this.socket.emit("new-post");
             this.$toast.open("Пост успешно создан!");
           })
           .catch(() => {
@@ -282,7 +286,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["user", "webRoutes"]),
+    ...mapGetters(["user", "webRoutes", "socket"]),
     userAvatar() {
       return this.webRoutes.userAvatar + this.user.avatar;
     },

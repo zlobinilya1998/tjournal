@@ -1,11 +1,12 @@
 <template>
   <div
-    class="sidebar bg-white rounded-lg"
+    class="sidebar bg-white rounded-lg fixed"
     ref="sidebar"
     :style="{ width: leftSideBar.show ? '250px' : '45px' }"
   >
     <ul :class="{ 'divide-y': !leftSideBar.show }">
       <router-link
+        v-if="user"
         :to="highlightProfileLink"
         @click.native.prevent="goToMyProfile"
         class="
@@ -67,31 +68,24 @@ export default {
   methods: {
     ...mapMutations(["toggleRegistrationModal"]),
     goToMyProfile() {
-      if (this.user) {
-        this.$router.push({
-          name: "profile",
-          params: { id: this.user._id },
-        });
-      } else {
-        this.toggleRegistrationModal({ show: true });
-      }
+      this.$router.push({
+        name: "profile",
+        params: { id: this.user._id },
+      });
     },
   },
   computed: {
     ...mapGetters(["leftSideBar", "user"]),
-    highlightProfileLink(){
-      return this.$route.meta.profileRoute ? this.$route.name : 'undefined'
-    }
+    highlightProfileLink() {
+      return this.$route.meta.profileRoute ? this.$route.name : "undefined";
+    },
   },
 };
 </script>
 
 <style scoped lang="postcss">
 .sidebar {
-  height: 100%;
   z-index: 1;
-  top: 0;
-  left: 0;
   overflow-x: hidden;
   transition: 0.5s;
 }

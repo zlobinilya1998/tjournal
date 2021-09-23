@@ -22,7 +22,6 @@ const routes = [
       {
         path: "comments",
         name: "news/comments",
-        component: () => import("@/components/Comments/Index.vue"),
       },
       {
         path: "profile/:id",

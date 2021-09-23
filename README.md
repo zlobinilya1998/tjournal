@@ -23,7 +23,7 @@ npm run serve
 ```
 #### Server
 
-#### Project have two servers(nest and express), consequently u need to run both servers
+#### Project have two servers ([nest](https://github.com/zlobinilya1998/tjournal-nest-server) and [express](https://github.com/zlobinilya1998/tjournal-express-socket)), consequently u need to run both servers
 ```
 npm run server
 ```

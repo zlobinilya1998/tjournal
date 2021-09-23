@@ -1,0 +1,6 @@
+[submodule "modules/tjournal-nest-server"]
+	path = modules/tjournal-nest-server
+	url = https://github.com/zlobinilya1998/tjournal-nest-server.git
+[submodule "modules/tjournal-express-socket"]
+	path = modules/tjournal-express-socket
+	url = https://github.com/zlobinilya1998/tjournal-express-socket.git

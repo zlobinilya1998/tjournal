@@ -1,5 +1,10 @@
 # Tjournal
 
+### Clone project with submodules
+```
+git clone --recurse-submodules https://github.com/chaconinc/MainProject
+```
+
 ### Project setup
 ```
 npm install && cd server/myapp && npm install

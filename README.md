@@ -1,3 +1,4 @@
+<img src="logo.png" align="right" />
 # Tjournal
 ### Clone project with submodules
 ```

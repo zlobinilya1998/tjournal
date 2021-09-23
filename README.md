@@ -18,6 +18,9 @@ git submodule foreach npm install
 
 #### Client
 ```
-npm run serve && cd server/myapp && npm run server
+npm run serve
 ```
-
+#### Server 
+```
+npm run server
+```

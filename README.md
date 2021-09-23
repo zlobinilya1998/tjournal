@@ -15,6 +15,7 @@ git submodule foreach npm install
 
 ### Compiles and hot-reloads for development
 ```
+##Client
 npm run serve && cd server/myapp && npm run server
 ```
 

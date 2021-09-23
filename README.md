@@ -1,4 +1,6 @@
-# Tjournal
+```diff
+# - Tjournal
+```
 ### Clone project with submodules
 ```
 git clone --recurse-submodules https://github.com/zlobinilya1998/tjournal.git

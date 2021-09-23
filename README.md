@@ -1,5 +1,5 @@
 ```diff
-# - Tjournal
+-# Tjournal
 ```
 ### Clone project with submodules
 ```

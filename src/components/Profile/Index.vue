@@ -7,13 +7,20 @@
     <div class="bg-white p-5 pb-0 rounded-lg">
       <div class="flex items-start justify-between relative">
         <img
-          @click="$refs.selectAvatar.click()"
+          @click="$refs.file.click()"
           :src="userAvatar"
-          width="120"
-          class="mr-2 rounded-full cursor-pointer"
+          class="mr-2 rounded-md cursor-pointer w-24 h-24 object-cover"
           alt="avatar"
         />
         <input type="file" ref="selectAvatar" class="hidden" />
+        <form method="post" enctype="multipart/form-data" class="hidden">
+          <input
+            type="file"
+            ref="file"
+            name="file"
+            @change="uploadProfileAvatar"
+          />
+        </form>
         <button
           v-if="isMyProfile"
           @click="toggleDropDown"
@@ -153,7 +160,7 @@
                 "
               >
                 <p class="mr-2">Выход</p>
-                <v-icon name="fa-sign-out-alt"/>
+                <v-icon name="fa-sign-out-alt" />
               </button>
             </div>
           </transition>
@@ -231,7 +238,7 @@ export default {
       sessionStorage.removeItem("Authorization");
       this.setUser(null);
       this.showDropDown = false;
-      this.$toast.open("Выход из системы...")
+      this.$toast.open("Выход из системы...");
     },
     toggleDropDown() {
       this.showDropDown = !this.showDropDown;
@@ -273,6 +280,23 @@ export default {
             this.loading = false;
           });
       }, 600);
+    },
+    async uploadProfileAvatar() {
+      const formData = new FormData();
+      formData.append("file", this.$refs.file.files[0]);
+      try {
+        this.$axios
+          .post("files/avatar", formData)
+          .then(({ data }) => this.setUser(data))
+          .then(() => {
+            this.$axios
+              .get(`user/${this.$route.params.id}`)
+              .then(({ data }) => (this.profileUser = data));
+          });
+        this.$toast.success("Аватар профиля успешно изменен");
+      } catch (e) {
+        this.$toast.error("Произошла ошибка при записи файла");
+      }
     },
   },
   mounted() {

@@ -26,6 +26,8 @@ npm run serve
 ##### Project have `two servers` ([nest](https://github.com/zlobinilya1998/tjournal-nest-server) and [express](https://github.com/zlobinilya1998/tjournal-express-socket)), consequently u need to run both servers
 
 ``Nest module``
+
+##### For correct work, u need to add `.env` file in root of nest module, where `MONGO_DB` is your connection url and `JWT_SECRET` is any word  
 ```
 npm run start:dev
 ```
